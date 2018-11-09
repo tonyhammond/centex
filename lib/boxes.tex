@@ -1,0 +1,157 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% BOXES file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{BOXES}
+ 
+ 
+\newcount\box@style
+ 
+\newdimen\box@width \box@width=\page@width
+ 
+\def\box@options
+        {%
+        \@option <style>    <\set@map[box@style]={\\<frame>=0
+                             \\<shadow>=1 \\<gray>=2 }>
+        \@option <width>   <\set@dim\box@width=\@value>
+        \@option <hspace>  <\set@dim\box@hspace=\@value>
+        \@option <vspace>  <\set@dim\box@vspace=\@value>
+        \@option <rules>   <\set@dim\box@rules=\@value>
+        }
+ 
+ 
+\newbox\@box
+ 
+\def\makebox
+        {\@transfer\@makebox<<\box@options<<\empty}
+ 
+\def\@makebox
+        {\setbox\@box\vbox\bgroup
+        \hsize\box@width
+%       \dimen@\boxwidth
+%       \advance\dimen@ by-2\box@rules
+%       \advance\dimen@ by-2\box@hspace \hsize=\dimen@
+        }
+ 
+\def\endbox
+        {\egroup
+        \ifcase\box@style\@framebox\@box
+        \or\@shadowbox\@box
+        \or\@graybox\@box
+        \fi
+        \endgroup}
+ 
+ 
+\newdimen\box@hspace    \box@hspace=\z@           % default is no extra 
+space
+\newdimen\box@vspace    \box@vspace=\z@           % ditto
+\newdimen\box@rules  \box@rules=.4\p@       % normal rule thickness
+ 
+\def\@vspace{\vskip\box@vspace}
+\def\@hspace{\hskip\box@hspace}
+\def\@vrule{\vrule width\box@rules}
+\def\@hrule{\hrule height\box@rules}
+ 
+\newdimen\boxwidth \boxwidth=\page@width
+ 
+\long\def\@framebox
+        #1{\vbox{\hbox{\@vrule\vtop{\vbox{\@hrule\@vspace\hbox{\@hspace
+        {\box#1}\@hspace}}\@vspace\@hrule}\@vrule}}}
+ 
+ 
+\newdimen\boxshadow \boxshadow=4\p@       % arbitrary default
+ 
+\def\@vshadow{\vrule width\boxshadow}
+\def\@hshadow{\hrule height\boxshadow}
+\newtoks\orientation \orientation={1}
+ 
+\def\@shadowbox
+        #1{\setbox\z@\hbox{\@framebox#1} \dimen@\ht\z@
+        \advance\dimen@ by-\boxshadow
+        \vbox{\ifcase\the\orientation\hbox{\copy\z@\@vshadow height\dimen@}
+                \or\hbox{\@vshadow height\dimen@ \copy\z@}
+                \else\@error{`\string\orientation' should be 0 or 1}\fi
+        \nointerlineskip
+        \ifcase\the\orientation\hbox{\hskip\boxshadow 
+                \vbox{\@hshadow width\wd\z@}}
+                \or\hbox{\vbox{\@hshadow width\wd\z@}\hskip\boxshadow}\fi}}
+ 
+ 
+\newcount\ps@xdim
+\newcount\ps@ydim
+\newbox\ps@box
+ 
+\def\@graybox
+        #1{\setbox\ps@box#1
+        \ps@xdim\wd\ps@box
+        \ps@ydim\ht\ps@box \advance\ps@ydim by\dp\ps@box
+        \edef\@tokens{{PS:BOXE.PS /ht {\the\ps@ydim} def
+                /wd {\the\ps@xdim} def}}
+        \lower\dp\ps@box\ulap{\special\@tokens}
+        \box\ps@box}
+ 
+ 
+\def\@qbox
+        #1{\leavevmode\thinspace
+        \hbox{\vrule\vtop{\vbox{\hrule\kern1\p@
+        \hbox{\vphantom{/}\thinspace{#1}\thinspace}}%
+        \kern1\p@\hrule}\vrule}\thinspace}
+ 
+\def\?#1?{\if@draft@\@qbox{#1?}\vadjust{\dimen@\hsize
+        \advance\dimen@ by1\cm
+        \moveright\dimen@\ulap{\rlap{???}}}\else
+        \@error{Query `\string\?' still in text}#1\fi}
+ 
+ 
+{\catcode`\^^M=\active          % these lines must end with %
+        \gdef\no@obeylines{\catcode`\^^M\active \let^^M\ }%
+        \global\let^^M\ }       % this is in case ^^M appears in a \write
+ 
+\let\end@of@lines\empty
+ 
+ 
+ 
+\def\wrap@options
+        {%
+        \@option <align>    <\set@map[wrap@align]={\\<top>=0 \\<center>=1 
+                              \\<bottom>=2 }>
+        \@option <size>     <\set@dim\hsize=\@value\cm>
+        \@option <justify>  <\@else@true>
+        }
+ 
+\def\wrap
+        {\@transfer\@wrap<<\wrap@options<<\everywrap}
+ 
+\def\@wrap
+        {\setbox\z@\vbox\bgroup\normalbaselines\end@of@lines
+        \def\\{\unskip\newline\ignorespaces}%
+        \if@else@\else\rightskip\z@ plus.35\hsize\fi
+        \leavevmode\strut
+        }
+ 
+\def\endwrap
+        {\unskip\strut\egroup
+        \ifcase\box@style\vtop{\unvbox\z@}\or
+        \vcenter{\unvbox\z@}\or
+        \vbox{\unvbox\z@}\fi
+        \endgroup}
+ 
+\newtoks\everywrap
+ 
+ 
+\def\underlined
+        [#1]#2{{\splittopskip=\z@\vbadness=\@M
+        \setbox\z@\vbox{\offinterlineskip
+        \hsize=#1\cm \ignorespaces #2}
+        \loop\ifvbox\z@\setbox\@ne\vsplit\z@ to\baselineskip
+        \hbox to#1\cm{\strut\copy\@ne}\kern-1ex\hrule\kern1ex\repeat}}
+ 
+ 
+\def\align
+        #1{\vtop{\def\\{\cr\ignorespaces}\halign{\strut##\hfil\cr#1\crcr}}}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

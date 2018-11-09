@@ -1,0 +1,29 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% CENTEX file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\input cplain
+
+ 
+\def\fmtname{cenTeX}      \def\fmtversion{2.0}
+\def\cenTeX{cen\kern-.125em\TeX}
+ 
+\def\privatize{\catcode`@=11\relax}
+\def\noprivatize{\catcode`@=12\relax}
+ 
+ 
+\privatize
+\message{CENTEX}
+ 
+\def\@cenput#1{\input #1}
+\def\cen@module@set
+        { \\{documents} \\{utilities} \\{layout} \\{fonts}
+        \\{sections} \\{lists} \\{boxes} \\{math}
+        \\{tables} \\{figures} \\{makeup} \\{output} \\{saclantcen}
+        \\{prelims} \\{covers} \\{columns} \\{vugraphs} \\{setup} }
+\let\\\@cenput \cen@module@set \let\\\empty
+ 
+\noprivatize
+ 
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

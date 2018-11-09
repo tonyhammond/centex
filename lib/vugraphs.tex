@@ -1,0 +1,73 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% VUGRAPHS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{VUGRAPHS}
+ 
+ 
+\def\NATO@star
+        {\hbox{$\vcenter{\offinterlineskip\@nato\hbox{\vbox
+        {\hbox{\char'142}\hbox{\char'143}}\vbox
+        {\hbox{\char'141}\hbox{\char'144}}}}$}}
+ 
+ 
+ 
+\newcount\vugraph@align
+ 
+\def\vugraph@options
+        {%
+        \@option <align> <\set@map[vugraph@align]={\\<left>=0 \\<center>=1
+                                                   \\<right>=2 }>
+        \fi
+        }
+ 
+\newtoks\everyvugraph
+ 
+\def\vugraph
+        #1\par{\@vugraph{#1}}
+\def\pvugraph
+        #1\par{%
+        \setpage[orient=potrait;width=17.5\cm;height=23.7\cm
+                 ;top=3.25\cm;left=1.75\cm
+                 ;sides=single;head=1.25\cm;foot=1.25\cm;tag=0\cm]
+        \@vugraph{#1}}
+ 
+\def\@vugraph
+        #1{\ifx\doc@type\@VUGRAPH
+        \write@nl{<Vugraph> }
+        \else\@error{Document is not of type VUGRAPH}%
+        \fi
+\def\right@headline
+        {\ten@ssi@II\doc@class\hfil}
+\def\right@footline
+        {\ulap{\NATO@star\vskip-.5\cm}\ten@ssi@II
+                        SACLANTCEN\hfil\doc@class}
+        \vbox to\page@height\bgroup\type@size
+%       \let\@end\end \def\end{\endvugraph\@end}%
+        \let\end@of@lines\no@obeylines      % for \wrap and friends
+        \def\spacing{\noalign{\vskip.5\baselineskip}}%
+        \def\medskip{\noalign{\vskip-.5\baselineskip}}%
+        \def\smallskip{\noalign{\vskip-.75\baselineskip}}%
+        \def\*{\ifvmode\leavevmode\fi\hbox{$\bullet$}}%
+        \centerline{\vbox{\def\\{\cr\ignorespaces}%
+                \halign{\hfil\ten@ssbf@V##\hfil\cr#1\crcr}}%
+                }%
+        \vskip1\cm plus.35fil minus.5\cm
+        \begingroup\let\par=\cr \let\\=\linebreak \obeylines%
+        \hbox to\page@width\bgroup\hss\vbox\bgroup%
+        \ialign\bgroup&\enspace\rm##\enspace\hfil\cr}
+ 
+\def\endvugraph{\egroup\egroup\hss\egroup\endgroup\vfil\egroup}
+ 
+ 
+\def\normaltype
+        {\def\type@size{\vue@fonts@A \global\baselineskip35\p@}}
+\let\smalltype\normaltype
+\let\smallesttype\normaltype
+\def\type@size{\vue@fonts@A \global\baselineskip35\p@}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

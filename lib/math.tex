@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% MATH file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{MATH}
+ 
+ 
+\let\L=\left \let\R=\right
+ 
+\let\dsize=\displaystyle
+\let\tsize=\textstyle
+\let\ssize=\scriptstyle
+\let\sssize=\scriptscriptstyle
+ 
+ 
+\def\text#1{\hbox{\rm#1}}
+ 
+\def\operator
+        #1{\expandafter
+        \edef\csname#1\endcsname{\mathop{\fam\z@#1}\nolimits}}
+\def\unit#1{\expandafter\def\csname#1\endcsname{\text{#1}}}
+ 
+\def\dg{\hbox{$^\circ$}}
+\def\dgC{\hbox{$\,^\circ$C}}
+ 
+\def\half{\hbox{$1\over2$}}
+\def\fraction#1/#2{\hbox{$#1\over#2$}}
+\let\frac\fraction
+\def\sfraction
+        #1/#2{\leavevmode\kern.1em
+        \raise.5ex\hbox{\the\scriptfont0 #1}\kern-.1em
+        /\kern-.15em\lower.25ex\hbox{\the\scriptfont0 #2}}
+\let\sfrac\sfraction
+ 
+\def\d{\ifmmode\,{\rm d}\else\relax\fi}
+ 
+ 
+\let\@eqno=\eqno \def\eqno{\@eqno\rm}
+\let\@leqno=\leqno \def\leqno{\@leqno\rm}
+ 
+\def\eqalignno
+        #1{\displ@y \tabskip\centering
+        \halign 
+to\displaywidth{\hfil$\@lign\displaystyle{##}$\tabskip\z@skip
+        &$\@lign\displaystyle{{}##}$\hfil\tabskip\centering
+        &\llap{$\@lign{\rm##}$}\tabskip\z@skip\crcr
+        #1\crcr}}
+\def\leqalignno
+        #1{\displ@y \tabskip\centering
+        \halign 
+to\displaywidth{\hfil$\@lign\displaystyle{##}$\tabskip\z@skip
+        &$\@lign\displaystyle{{}##}$\hfil\tabskip\centering
+        
+&\kern-\displaywidth\rlap{$\@lign{\rm##}$}\tabskip\displaywidth\crcr
+        #1\crcr}}
+ 
+ 
+\long\def\listing
+        {\begingroup\parindent=1.5\cm\parskip\z@\obeylines\ten@tt\par
+        \hskip-.5\cm\hbox to12\cm{\leaders\hrule height.5\p@\hfill}}
+\def\endlisting
+        {\kern-4\p@\hskip-.5\cm\hbox to12\cm{\leaders\hrule 
+height.5\p@\hfill
+        }\endgroup}
+ 
+\def\=#1={\leavevmode\hbox{\sq#1}}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

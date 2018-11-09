@@ -1,0 +1,80 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% COLUMNS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{COLUMNS}
+ 
+ 
+\newcount\col@balance
+\newcount\col@set
+ 
+\newdimen\col@width  \col@width=6.5\cm
+\newdimen\col@height \col@height=21\cm
+ 
+\newtoks\everycolumns
+ 
+\newbox\partial@page
+ 
+\def\column@options
+        {%
+        \@option <balance> <\set@map[col@balance]={\\<true>=0 \\<false>=1 
+}>
+        \@option <set>     <\set@map[col@set]={\\<flush>=0 \\<ragged>=1 }>
+        \@option <width>   <\set@dim\col@width=\@value>
+        \@option <height>  <\set@dim\col@height=\@value>
+        }
+ 
+\def\columns
+        {\@transfer\@columns<<\column@options<<\everycolumns}
+ 
+\def\@columns
+        {\noindent\@output{\cen@output{\unvbox\@cclv}}
+        \ifcase\col@set\or\raggedright\fi
+        \tolerance=\@m \emergencystretch=.5em \vbadness\@M \hbadness\@M
+        \@output={\global\setbox\partial@page=\vbox{\unvbox\@cclv}}\eject
+        \@output={\columns@out} \hsize=\col@width \vsize=2\col@height
+        \advance\vsize by -2\ht\partial@page}
+ 
+\def\endcolumns
+        {\ifcase\col@balance\@output={\balance@columns}\fi
+        \vfil\eject
+        \global\@output={\cen@output{\unvbox\@cclv}}
+        \endgroup \pagegoal=\page@height}
+ 
+\def\columns@out
+        {\dimen@=\page@height
+        \advance\dimen@ by-\ht\partial@page \splittopskip=\topskip
+        \setbox\z@\vsplit\@cclv to\dimen@
+        \setbox\tw@\vsplit\@cclv to\dimen@
+        \cen@output\page@so@far
+        \global\vsize=2\col@height
+        \unvbox\@cclv \penalty\outputpenalty}
+ 
+\def\page@so@far
+        {\unvbox\partial@page
+        \wd\z@\hsize \wd\tw@\hsize \hbox to\page@width
+        {\box\z@\hfil\box\tw@}}
+ 
+ 
+\def\balance@columns
+        {\setbox\z@\vbox{\unvbox\@cclv} \dimen@\ht\z@
+        \advance\dimen@ by\topskip \advance\dimen@ by-\baselineskip
+        \divide\dimen@ by2 \splittopskip=\topskip
+        {\vbadness=\@M \loop \global\setbox3=\copy\z@
+        \global\setbox1=\vsplit3 to\dimen@
+        \ifdim\ht3>\dimen0 \global\advance\dimen@ by1\p@ \repeat}
+        \setbox\z@\vbox to\dimen@{\unvbox1}
+        \setbox\tw@\vbox to\dimen@{\dimen2=\dp3 \unvbox3 \kern-\dimen2 
+\vfil}
+        \global\@output={\balancing@error}
+        \page@so@far}
+ 
+\def\balancing@error
+        {\@warning{Page can't be balanced}
+        \cen@output{\unvbox\@cclv}}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

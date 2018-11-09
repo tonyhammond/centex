@@ -1,0 +1,238 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% COVERS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{COVERS}
+ 
+ 
+\def\coverpages
+        {\if@SACLANTCEN@\final\cornerrules
+        \@regmarks@false\set@page@covers
+        \@newpage\pageno\@ne \get@page@counts
+        \coverpage@I\coverpage@II\coverpage@III
+        \ifx\doc@class\@NU\else\coverpage@IV\fi
+        \supereject\write@nl{<Data Sheet>}%
+        \input CENTEX:DATA_SHEET
+        \else
+        \@warning
+        {This is not a formal SACLANTCEN document type}
+        \fi}
+ 
+ 
+\newif\if@demo@
+ 
+\def\coverpage@I
+        {\@newpage\write@nl{<Cover Page>}%
+        \@regmarks@false\set@page@covers
+        \vbox{\hsize12\cm \text@fonts@B
+        \ulap{\rightline{\cen@cover@class}\nointerlineskip\vskip1\cm}
+        \top@corners
+        \moveright.5\cm \vbox to\vsize{\hsize11\cm
+        \rightline{\hfil\vtop{\hsize8.25\cm
+        \raggety@left \vskip.75\cm
+        \dlap{\sq SACLANTCEN \doc@type\linebreak
+        serial no.: \doc@serial@no}
+        \vskip4\cm
+        \if@demo@\cen@cover@logo\fi
+        \vskip7.5\cm
+        \ulap{\ten@ssbf@II\baselineskip16\p@\doc@title}
+        \vskip1\cm
+        \dlap{\ten@ss@II\baselineskip16\p@\doc@author\linebreak
+              \vskip1\cm\date@approved}
+        }}
+        \vfill
+        \ulap{\sq\tolerance\@M\hbadness\@M
+                \hyphenpenalty\@M\parfillskip\z@\@blurb}
+        \vskip.75\cm
+        }\bottom@corners
+        \dlap{\vskip.5\cm\rightline{\cen@cover@class}\nointerlineskip}
+        }}
+ 
+\def\cen@cover@class
+        {\ifx\doc@class\@NU\relax
+        \else\ten@ssbf@IV\doc@class\unskip\fi}
+\def\cen@cover@logo
+        {\def\\{\vrule\@width\z@\@height15\p@}
+        \ulap{\hsize8.4\cm
+        \llap{\vbox{\ten@ssi@III\hbox{\\SACLANT UNDERSEA}
+        \hbox{\\RESEARCH CENTRE}\bigskip
+        \hbox{\\\doc@type}}}\hfil}}
+ 
+\def\raggety@left
+        {\leftskip\z@ plus8.25\cm minus.5\cm\hyphenpenalty\@M
+        \parfillskip\z@\parskip\z@}
+ 
+ 
+\newcount\pp@total
+ 
+\def\coverpage@II
+        {\@newpage\write@nl{<Cover Page>}%
+        \@regmarks@false\set@page@covers
+        \vbox{\hsize12\cm
+        \top@corners
+        \moveright.5\cm \vbox to\vsize{\hsize8.25\cm \text@fonts@B
+        \dlap{\parindent20\p@\vskip.75\cm\hrule height.8\p@
+        \noindent\tolerance\@m
+        \@disclaimer \bigskip \hrule \vskip.5\cm \set@page@counts
+        \bigskip \hrule height.8\p@}\vfil
+        \ulap{{\tolerance\@M\hbadness\@M\obeylines\let\\\newline
+        \@address\vskip1\cm\line{\sq
+        NORTH ATLANTIC TREATY ORGANIZATION}}\vskip.75\cm
+        }}\bottom@corners}}
+ 
+\def\get@page@counts
+        {\expandafter\edef\expandafter\@\doc@serial@no%
+        \write@nl{>> Enter page counts for \@}%
+        \write@nl{\wr@spaces (type 0 if empty page range)}%
+        \write@nl{}%
+        \@enquire\pp@roman {\wr@spaces Roman \space pp}%
+        \@enquire\pp@arabic{\wr@spaces Arabic pp}%
+        \@enquire\pp@atpage{\wr@spaces @-Page pp}%
+        \write@ln{}%
+        \global\pp@total=\pp@roman
+        \global\advance\pp@total by\pp@arabic
+        \global\advance\pp@total by\pp@atpage}
+ 
+\def\set@page@counts
+        {\vbox{\setbox\z@\hbox{Page count for \doc@serial@no}
+        \halign to\wd\z@
+        {\tabskip\@filskip##\hfil&\hfil##\cr
+        \multispan2{\box\z@}\cr
+        \multispan2{(excluding Covers\hfil}\cr
+        \multispan2{and Data Sheet)\hfil}\cr
+        \spanrule2\cr
+        Pages&\llap{Total}\cr
+        \spacing
+        \ifnum\pp@roman >\z@  i--\romannumeral\pp@roman&\pp@roman\cr\fi
+        \ifnum\pp@arabic>\z@  1--\pp@arabic&\pp@arabic\cr\fi
+        \ifnum\pp@atpage>\z@ @1--@\pp@atpage&\pp@atpage\cr\fi
+        \closeup
+        &\vrule\@height.4\p@\ifnum\pp@total<100
+               \@width1em\else\@width1.5em\fi\cr
+        &\the\pp@total\cr}}}
+ 
+ 
+\newif\if@done@counting@
+ 
+\newcount\cc@total    \cc@total=0
+\newcount\cc@external \cc@external=0
+\newcount\cc@library  \cc@library=0
+\newcount\cc@stock    \cc@stock=0
+ 
+\def\coverpage@III
+        {\@newpage\write@nl{<Cover Page>}%
+        \@regmarks@false\set@page@covers
+        \vbox{\hsize12\cm \text@fonts@B \top@corners
+        \moveright.25\cm
+        \vbox to\vsize{\hsize11.5\cm
+        \setbox\z@\vtop{\hsize5\cm
+        \global\catcode`\@=11
+        \halign{\sq\def\\{##}\\\hfil&\hfil\sq\def\\{##}\\%
+        \if@done@counting@
+        \else\ifx\\\empty\else\global\advance\cc@external by\\\fi\fi\cr
+        \@Distribution
+        }}%
+        \global\catcode`\@=12
+        \splittopskip\z@ \vbadness\@M
+        \dimen@\ht\z@ \advance\dimen@ by\dp\z@
+        \setbox\@ne\vsplit\z@ to.5\dimen@
+        \setbox\tw@\vbox{\unvbox\z@}
+        \dimen@ii\ht\tw@ \advance\dimen@ii by\dp\tw@
+        \advance\dimen@ii by-2.5\cm        % 2.5 cm is height of totals 
+info
+        \setbox\thr@@\vsplit\tw@ to\dimen@ii
+        \setbox\@ne\vbox{\unvbox\@ne\unskip}%
+        \setbox\z@\vbox to\ht\@ne{\unvbox\thr@@\unskip\vfil\box\tw@}%
+        \vfill
+        \vbox{\ten@ssbf@ Initial Distribution
+              \ifx\doc@serial@no\empty\else for \doc@serial@no\fi
+              \vskip1.5\cm plus1\cm minus.5\cm}%
+        \line{\box\@ne\hfil\box\z@}%
+        \vskip.75\cm
+        }\bottom@corners}}
+ 
+\def\@Distribution
+        {\expandafter\@input\@Distribution@List
+        %%%%%%%%%%%%%%%%%%%%%%%%%
+        \noalign{\vskip1.5\cm plus1fil
+                 \global\@done@counting@true}%
+        Total external distribution&\the\cc@external\cr
+        SACLANTCEN Library&\the\cc@library\cr
+        \noalign{\global\cc@stock=\cc@total
+                 \global\advance\cc@stock by-\cc@external
+                 \global\advance\cc@stock by-\cc@library}%
+        Stock&\the\cc@stock\cr
+        \noalign{\ifnum\cc@total<100
+                 \gdef\@rule{\vrule\@width1em\@height.4\p@}\else
+                 \gdef\@rule{\vrule\@width1.5em\@height.4\p@}\fi}%
+        \closeup
+        \omit&\omit\@rule\cr
+        Total number of copies&\the\cc@total\cr
+        %%%%%%%%%%%%%%%%%%%%%%%%%
+        }
+ 
+\def\@Distribution@List
+        {%
+        \ifx\doc@type\CEN@REPT CENTEX:NORMAL.DIS\else
+        \ifx\doc@type\CEN@MEMO CENTEX:NORMAL.DIS\else
+        \ifx\doc@type\CEN@SPEC CENTEX:NORMAL.DIS\else
+        \ifx\doc@type\ANN@REPT CENTEX:ANNUAL.DIS\else
+        \ifx\doc@type\PRO@WORK CENTEX:SCIPRO.DIS\else
+%        \ifx\doc@type\CONF@PRO CENTEX:NORMAL.DIS\else
+        \fi\fi\fi\fi\fi\fi
+        }
+ 
+ 
+\def\tailor@Standard
+        {%
+        \def\France@gets@copies{\\\PRJ@XII\\\PRJ@XIX\\\PRJ@XX\\\PRJ@XXIII}
+        \is@member\doc@project\of\France@gets@copies
+        \if@valid@\global\@France@true\else\global\@France@false\fi
+%
+        \ifx\doc@type\CEN@MEMO
+               \global\cc@total=60
+        \else
+        \ifx\doc@class\@NU
+               \global\cc@total=260
+        \else
+               \global\cc@total=245
+        \fi\fi}
+ 
+\def\@Command = #1 = #2 SR for #3 #4 SM for #5
+        {%
+        \ifx\doc@type\CEN@REPT\@cc=#2\def\prj@set{#3}%
+        \else
+        \ifx\doc@type\CEN@MEMO\@cc=#4\def\prj@set{#5}%
+        \fi\fi
+        \ifnum\the\@cc=\z@\else
+        \is@member\doc@project\of\prj@set
+        \if@valid@
+        \xdef\C{\C#1&\the\@cc\cr}%
+        \fi\fi}
+ 
+\newcount\@cc
+ 
+\newif\if@ORG@ \newif\if@France@ \newif\if@Commands@
+ 
+\def\@recipient
+        #1 {\noalign{%
+        \ifx\@recipient@\relax\vskip\baselineskip
+        \else\global\let\@recipient@\relax\fi}\omit
+        \underbar{\sqi#1}\quad\enspace&\cr
+        \noalign{\nobreak}}
+ 
+ 
+\def\coverpage@IV
+        {\write@nl{<Cover Page>}\@regmarks@false\set@page@covers
+        \vbox{\hsize12\cm
+        \ulap{\leftline{\cen@cover@class}\nointerlineskip\vskip1\cm}
+        \top@corners
+        \vbox to\vsize{\vfill}
+        \bottom@corners
+        \dlap{\vskip.5\cm\leftline{\cen@cover@class}\nointerlineskip}}}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

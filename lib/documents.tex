@@ -1,0 +1,243 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% DOCUMENTS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{DOCUMENTS}
+ 
+ 
+\everyjob
+        {\everyjob
+        {\get@cen@data\if@abort@\expandafter\end\fi
+        \ifx\doc@type\NULL@DOC
+                \@inform{Ending NULL document}\expandafter\end
+        \else
+                \ifx\VMS@grp\ISB@grp\@cenput{centex.ch}\fi
+                \set@page@class \set@page@defaults
+                \cenput@file
+                \set@cen@stamp \show@dates
+                \ifx\doc@type\@VUGRAPH\else\set@tagline\fi
+        \fi}}
+ 
+ 
+\newif\if@SACLANTCEN@      % flag for formal S/CEN documents
+\newif\if@PostScript@      % flag for PostScript
+\newif\if@abort@           % flag for aborting job
+ 
+\def\ISB@grp{{_ISB}}     % \VMS@grp
+\def\ISB@usr{{ISB}}      % \VMS@user
+ 
+ 
+\newread\cen@data
+ 
+\def\get@cen@data
+        {\openin\cen@data=CEN$DATA.STI
+        \def\@read##1{\read\cen@data to##1}
+        \ifeof\cen@data
+                \@error{CEN data missing - please report}
+                \@abort@true
+        \else
+                \endlinechar\m@ne
+                \@read\\ \@read\\
+                \@read\VMS@security \@read\VMS@user
+                \@read\VMS@grp \@read\VMS@laser
+                \let\PS@laser\VMS@laser \@validate\PS@laser
+                \if@valid@\@PostScript@true\else\@PostScript@false\fi
+                \@read\\ \@read\\ \@read\\
+                \@read\doc@class \@validate\doc@class
+                        \if@valid@\else\cen@aborting\doc@class\fi
+                \@read\doc@type\let\int@type\doc@type\@validate\int@type
+                        \if@valid@\else\let\ext@type\doc@type
+                                \@validate\ext@type
+                                \if@valid@\else
+                                
+\def\@set\int@type@set\cen@aborting\int@type
+                                
+\def\@set\ext@type@set\cen@aborting\ext@type
+                        \fi\fi
+                        \let\SCEN@type\doc@type \@validate\SCEN@type
+                        
+\if@valid@\@SACLANTCEN@true\else\@SACLANTCEN@false\fi
+                \@read\doc@division \@validate\doc@division
+                        \if@valid@\else\cen@aborting\doc@division\fi
+                \@read\doc@project \@validate\doc@project
+                        \if@valid@\else\cen@aborting\doc@project\fi
+                {\endlinechar`\^^M
+                \let\break\space \let\newline\space \def~{ }
+                \global\@read\doc@title
+                \global\@read\doc@author}
+                \global\@read\doc@note\expandafter\wr@log\doc@note
+                \ifx\VMS@grp\ISB@grp
+                        \if@SACLANTCEN@
+                        \@read\doc@id
+                        \@read\doc@publ@date
+                        \@read\doc@serial@no
+                        \fi
+                \fi
+                \endlinechar`\^^M
+        \fi
+        \closein\cen@data}
+ 
+ 
+\newif\if@valid@
+\def\@validate
+        #1{\def\@set
+        {\expandafter\csname\expandafter\expandafter\expandafter
+        \take@i\string#1@set\endcsname}\is@member#1\of\@set}
+ 
+\def\take@i#1{}
+ 
+\def\is@member
+        #1\of#2{\@valid@false\edef\@given{#1}\def\\##1{\edef\@next{##1}
+        \ifx\@next\@given\@valid@true\fi}#2}
+ 
+ 
+\def\PS@laser@set{\\\@PRISB}
+ 
+\def\@PRISB{{PRISB}}
+ 
+ 
+\def\cen@aborting
+        #1{\@fatal{Document
+        \expandafter\expandafter\expandafter\take@v\string#1
+        \@given\space is NOT known - PLEASE CHECK}
+        \@abort@true}
+ 
+\def\take@v#1#2#3#4#5{}
+ 
+ 
+\def\doc@class@set{\\\@NU\\\@NR\\\@NC\\\@NS}
+ 
+\def\@NU{{NATO UNCLASSIFIED}}
+\def\@NR{{NATO RESTRICTED}}
+\def\@NC{{NATO CONFIDENTIAL}}
+\def\@NS{{NATO SECRET}}
+ 
+ 
+\def\int@type@set
+        {\\\CEN@MEMO\\\CEN@REPT\\\CEN@SPEC\\\@VUGRAPH\\\@VUGRAPP
+        \\\DIV@DRFT\\\INT@NOTE\\\EXT@NOTE\\\@CEN@DOC\\\NULL@DOC}
+\def\ext@type@set
+        {\\\ANN@REPT\\\PRO@WORK\\\@BIBLIO@\\\CONF@PRO}
+\def\SCEN@type@set
+        {\\\CEN@MEMO\\\CEN@REPT\\\CEN@SPEC\\\CONF@PRO\\\ANN@REPT\\\PRO@WORK
+        \\\@BIBLIO@}
+ 
+\def\ANN@REPT{{ANNUAL REPORT}}
+\def\PRO@WORK{{PROGRAMME OF WORK}}
+\def\@BIBLIO@{{BIBLIOGRAPHY}}
+\def\CEN@MEMO{{MEMORANDUM}}
+\def\CEN@REPT{{REPORT}}
+\def\CEN@SPEC{{SPECIAL REPORT}}
+\def\CONF@PRO{{CONFERENCE PROCEEDINGS}}
+\def\DIV@DRFT{{DIVISION DRAFT}}
+\def\INT@NOTE{{INTERNAL NOTE}}
+\def\EXT@NOTE{{EXTERNAL NOTE}}
+\def\@VUGRAPH{{VUGRAPH}}
+\def\@VUGRAPP{{PVUGRAPH}}
+\def\@CEN@DOC{{CEN DOCUMENT}}
+\def\NULL@DOC{{NULL DOCUMENT}}
+ 
+ 
+\def\cenput@file
+        {
+        \ifx\doc@type\ANN@REPT\@cenput ANNUAL \fi
+        \ifx\doc@type\@BIBLIO@\@cenput BIBLIO \fi
+        \ifx\doc@type\CONF@PRO\@cenput CONFER \fi
+        \ifx\doc@type\PRO@WORK\@cenput SCIPRO \fi
+        }
+ 
+ 
+\def\doc@division@set{\\\@SRD\\\@URD\\\@DIR\\\@TSD\\\@FIN\\\@PAD}
+ 
+\def\@SRD{{SRD}}      \def\@URD{{URD}}       \def\@DIR{{DIR}}
+\def\@TSD{{TSD}}      \def\@FIN{{FIN}}       \def\@PAD{{PAD}}
+ 
+ 
+\def\doc@project@set
+        {\\\PRJ@\\\PRJ@II\\\PRJ@IV\\\PRJ@V\\\PRJ@VI\\\PRJ@XII
+        \\\PRJ@XVIII\\\PRJ@XIX\\\PRJ@XX\\\PRJ@XXI\\\PRJ@XXII
+        \\\PRJ@XXIII\\\PRJ@XXV\\\PRJ@XXVI\\\PRJ@A\\\PRJ@E\\\PRJ@S}
+ 
+\def\PRJ@{{00}}       \def\PRJ@II{{02}}      \def\PRJ@IV{{04}}
+\def\PRJ@V{{05}}      \def\PRJ@VI{{06}}      \def\PRJ@XII{{12}}
+\def\PRJ@XVIII{{18}}  \def\PRJ@XIX{{19}}     \def\PRJ@XX{{20}}
+\def\PRJ@XXI{{21}}    \def\PRJ@XXII{{22}}    \def\PRJ@XXIII{{23}}
+\def\PRJ@XXV{{25}}    \def\PRJ@XXVI{{26}}
+\def\PRJ@A{{A}}       \def\PRJ@E{{E}}        \def\PRJ@S{{S}}
+ 
+ 
+\newcount\class@class
+\newcount\page@class
+ 
+\newtoks\everyclass
+ 
+\def\class@options
+        {%
+        \@option <class>    <\set@map[class@class]={\\<NU>=0 \\<NR>=1
+                                          \\<NC>=2 \\<NS>=3 }>
+        }
+ 
+\def\set@page@class
+        {\ifx\doc@class\@NU\class@class=0 \everyclass={class=NU}\else
+         \ifx\doc@class\@NR\class@class=1 \everyclass={class=NR}\else
+         \ifx\doc@class\@NC\class@class=2 \everyclass={class=NC}\else
+         \ifx\doc@class\@NS\class@class=3 \everyclass={class=NS}%
+         \fi\fi\fi\fi\global\page@class=\class@class}
+ 
+\def\@newclass
+        {\global\page@class=\class@class}
+ 
+ 
+\newbox\cen@stamp
+\def\set@cen@stamp
+        {\if@SACLANTCEN@
+        \setbox\cen@stamp\vbox{\baselineskip12\p@
+        \setbox\z@\hbox{\twelve@rm@ S} \dimen@\wd\z@
+        \setbox\tw@\hbox{\eight@rm@ ACLANTCEN
+        \doc@serial@no\unskip}\advance\dimen@ by\wd\tw@
+        \hbox to\dimen@{\kern\wd\z@\hrulefill}\kern-4\p@
+        \hbox to\dimen@{\box\z@\box\tw@}%
+        \kern-8.6\p@\hbox to\dimen@{\hrulefill}\kern-3\p@}%
+        \else
+        \setbox\cen@stamp\hbox{\ten@ss@
+                [Draft -- \doc@division/\doc@project]}%
+        \fi}
+ 
+ 
+\def\@UN{{UNCLASSIFIED}}            % for \VMS@security test
+\def\doc@empty{{}}                  % for empty declaration test
+ 
+\newbox\@tagline
+\def\set@tagline
+        {\edef\in@file{\lowercase{\jobname}}
+        \setbox\@tagline\vtop
+        {{\text@fonts@B \tolerance\@M \hbadness\@M
+        \rightskip\z@ plus1fil minus2.5\cm \parskip\z@
+        \parindent1\cm \baselineskip11\p@
+        \let\break\space \let\newline\space
+        \hang\noindent
+        \def\@tag##1=##2{\hbox{##1}={\sqi##2}\quad}
+        \@tag{/date}={\@today} \@tag{/time}={\@hours}
+        \@tag{/format}={\cenTeX} \@tag{/input file}={\in@file}
+        \@tag{/author}={\doc@author}
+        \ifx\doc@note\doc@empty
+        \else
+        \@tag{/note}={``\doc@note\unskip''}\fi
+        \if@SACLANTCEN@
+                \@tag{/document id}={\doc@id}
+        \fi
+        \par
+%        \noindent
+%        \@line{\unskip\@leadfill{5\p@}\quad This is a
+%        \ifx\VMS@security\@UN\makebold{\sq\doc@class}\else
+%        \makebold{\sq NATO \VMS@security}\fi
+%        \thinspace\ page of a
+%        \makebold{\sq\doc@class}\thinspace\
+%        document\quad\@leadfill{5\p@}}\ignorespaces
+        }}}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

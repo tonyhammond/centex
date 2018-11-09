@@ -1,0 +1,118 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% LAYOUT file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{LAYOUT}
+ 
+ 
+\newtoks\everypage
+ 
+\newcount\page@orient      \newcount\page@sides
+\newcount\page@paging
+\newdimen\page@width       \newdimen\page@height
+\newdimen\page@left        \newdimen\page@right
+\newdimen\page@top         \newdimen\page@bottom
+\newdimen\page@left@verso  \newdimen\page@left@recto
+ 
+\newdimen\page@headskip
+\newdimen\page@footskip
+\newdimen\page@tagskip
+ 
+\def\page@options
+        {
+        \@option <orient>   <\set@map[page@orient]={\\<portrait>=0
+                                                   \\<landscape>=1 }>
+        \@option <sides>    <\set@map[page@sides]={\\<single>=0
+                                                  \\<double>=1 }>
+        \@option <paging>   <\set@map[page@paging]={\\<default>=0
+                                                  \\<section>=1
+                                                  \\<atpages>=2
+                                                  \\<none>=-1 }>
+        \@option <width>    <\set@dim\page@width=\@value>
+        \@option <height>   <\set@dim\page@height=\@value>
+        \@option <left>     <\set@dim\page@left=\@value>
+        \@option <right>    <\set@dim\page@right=\@value>
+        \@option <top>      <\set@dim\page@top=\@value>
+        \@option <bottom>   <\set@dim\page@bottom=\@value>
+        \@option <recto>    <\set@dim\page@left@recto=\@value>
+        \@option <verso>    <\set@dim\page@left@verso=\@value>
+        \@option <head>     <\set@dim\page@headskip=\@value>
+        \@option <foot>     <\set@dim\page@footskip=\@value>
+        \@option <tag>      <\set@dim\page@tagskip=\@value>
+        }
+ 
+\def\setpage
+        {\g@transfer\@setpage<<\page@options<<\everypage}
+ 
+\def\@setpage
+        {\endgroup\hsize\page@width \vsize\page@height
+        \set@hoffset\page@left \set@voffset\page@top
+        }
+ 
+\def\set@page@defaults
+        {\ifx\doc@type\@VUGRAPH
+        \setpage[orient=landscape;width=26.2\cm;height=15\cm
+                 ;top=3.25\cm;left=1.75\cm
+                 ;sides=single;head=1.25\cm;foot=1.25\cm;tag=0\cm]
+        \else\ifx\doc@type\@VUGRAPP
+        \setpage[orient=potrait;width=17.5\cm;height=23.7\cm
+                 ;top=3.25\cm;left=1.75\cm
+                 ;sides=single;head=1.25\cm;foot=1.25\cm;tag=0\cm]
+        \else\ifx\doc@type\EXT@NOTE
+        \setpage[orient=portrait;width=14\cm;height=21\cm
+                 ;top=4\cm;left=3.5\cm
+                 ;sides=double;verso=3\cm;recto=4\cm
+                 ;head=0\cm;foot=0\cm;tag=2.5\cm]
+        \else
+        \setpage[orient=portrait;width=14\cm;height=21\cm
+                 ;top=4\cm;left=3.5\cm
+                 ;sides=double;verso=3\cm;recto=4\cm
+                 ;head=1.25\cm;foot=1.25\cm;tag=2.5\cm]
+        \fi\fi\fi
+        }
+ 
+\def\set@page@covers
+        {\setpage[orient=portrait;paging=none;width=12\cm;height=23.5\cm
+                 ;top=3\cm;left=7\cm
+                 ;sides=double;verso=2\cm;recto=7\cm
+                 ;head=0\cm;foot=0\cm;tag=0\cm]
+        }
+ 
+\def\set@page@datasheet
+        {\setpage[orient=portrait;paging=none;width=15\cm;height=26.5\cm
+                 ;top=3\cm;left=4.75\cm
+                 ;sides=single;verso=4.75\cm;recto=4.75\cm
+                 ;head=0\cm;foot=0\cm;tag=0\cm]
+        }
+ 
+\newdimen\@hoffset \@hoffset=-1in
+\newdimen\@voffset \@voffset=-1in
+ 
+\def\set@hoffset
+        #1{{\advance\@hoffset by#1 \global\hoffset\@hoffset}}
+\def\set@voffset
+        #1{{\advance\@voffset by#1 \global\voffset\@voffset}}
+ 
+ 
+\parindent=\z@
+\newskip\@parskip \@parskip=12\p@ plus3\p@ minus\z@
+\parskip\@parskip
+ 
+\abovedisplayskip=12\p@ plus3\p@ minus6\p@      % less shrinkage with 
+displays
+\belowdisplayskip=12\p@ plus3\p@ minus6\p@      % ditto
+\abovedisplayshortskip=\z@ plus3\p@ minus\z@    % as PLAIN
+\belowdisplayshortskip=7\p@ plus3\p@ minus4\p@  % as PLAIN
+\jot=6\p@                                       % double PLAIN value
+\clubpenalty=\@m
+\widowpenalty=\@m
+ 
+ 
+\newskip\@filskip \@filskip=\z@ plus1fil minus\z@
+\newskip\@tabskip \@tabskip=.5em plus\z@ minus\z@
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

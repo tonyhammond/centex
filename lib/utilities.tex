@@ -1,0 +1,321 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% UTILITIES file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{UTILITIES}
+ 
+ 
+\let\Q=\quad \let\QQ=\qquad
+\let\N=\enspace
+ 
+\def\@incr#1{\advance#1 \@ne}
+\def\@decr#1{\advance#1 \m@ne}
+\def\do
+        #1\times#2{\count@\z@\loop\ifnum\count@
+        <#1#2\advance\count@\@ne\repeat}
+ 
+ 
+\def\cm{cm}     % cm are more meaningful than picas, etc.
+\def\@bp{bp}    % PostScript native units are big points
+ 
+\def\@height{height}
+\def\@depth{depth}
+\def\@width{width}
+ 
+ 
+\def\linebreak{\unskip\penalty-\@M}
+\def\pagebreak{\vadjust{\penalty-\@M}}
+\def\newline{\hfil\penalty-\@M}
+\def\newpara{\vadjust{\vskip\parskip}\newline}
+\def\newpage{\par\vfill\eject}
+\def\@newpage{\par\vfill\supereject}
+\let\flushpage\@newpage
+ 
+\def\emptypage{\null\par\vfill\eject}
+ 
+\newif\if@blankpage@
+\def\blankpage{\@blankpage@true\null\vfill\eject\@blankpage@false}
+ 
+\def\no@hyphens
+        {\pretolerance=\@M \tolerance=\@M
+        \hyphenpenalty=\@M \exhyphenpenalty=\@M}
+\let\nohyphens\no@hyphens
+ 
+\def\nobadness
+        {\hbadness=\@M\vbadness=\@M}
+ 
+\def\makebold
+        #1{\setbox\z@\hbox{#1}\kern-0.025em\copy\z@\kern-\wd\z@
+        \kern0.05em\copy\z@\kern-\wd\z@ \kern-0.025em\raise0.0433em\box\z@}
+ 
+ 
+\def\dlap#1{\vbox to\z@{#1\vss}}
+\def\ulap#1{\vbox to\z@{\vss#1}}
+\def\udlap#1{\vbox to\z@{\vss#1\vss}}
+\def\lrlap#1{\hbox to\z@{\hss#1\hss}}
+ 
+\newif\if@corners@
+\def\cornerrules{\@corners@true}
+\def\nocornerrules{\@corners@false}
+ 
+\def\bottom@corners
+        {\if@corners@\nointerlineskip\ulap{\line
+        {\vrule \@height.5\cm \@depth\z@
+        \vrule \@width.5\cm \@height.4\p@ \@depth\z@\hfil
+        \vrule \@width.5\cm \@height.4\p@ \@depth\z@
+        \vrule \@height.5\cm \@depth\z@}}\fi\nointerlineskip}
+\def\top@corners
+        {\if@corners@\nointerlineskip\dlap{\line
+        {\vrule \@height\z@ \@depth.5\cm
+        \vrule \@width.5\cm \@height.4\p@ \@depth\z@\hfil
+        \vrule \@width.5\cm \@height.4\p@ \@depth\z@
+        \vrule \@height\z@ \@depth.5\cm}}\fi\nointerlineskip}
+ 
+\def\@leadfill#1{\leaders\hrule \@height#1 \@depth\z@\hfill}
+\def\@line#1#{\hbox to\page@width}
+\def\lin@#1{\hbox to\page@width{#1\hss}}
+ 
+ 
+\def\@hours
+        {{\count\@ne=\time \divide\count\@ne 60
+        \count\tw@=-\count\@ne \multiply\count\tw@ 60 
+\advance\count\tw@\time
+        \two@digs{\count\@ne}:\two@digs{\count\tw@}}}
+\def\two@digs#1{\ifnum #1<10 0\fi \number#1}
+ 
+\def\month@table
+        #1{\ifcase#1{???}{}\or
+        {Jan}{January}\or
+        {Feb}{February}\or
+        {Mar}{March}\or
+        {Apr}{April}\or
+        {May}{May}\or
+        {Jun}{June}\or
+        {Jul}{July}\or
+        {Aug}{August}\or
+        {Sep}{September}\or
+        {Oct}{October}\or
+        {Nov}{November}\or
+        {Dec}{December}\fi}
+ 
+\def\short@name#1#2{#1}
+\def\long@name #1#2{#2}
+\def\month@short{\expandafter\short@name\month@name}
+\def\month@full{\expandafter\long@name\month@name}
+ 
+\newcount\@year
+\newcount\@month
+\newcount\@day
+ 
+\def\parse@id@received
+        #1#2#3#4#5#6{\global\@year\ifnum#2<5 199#2\else198#2\fi
+        \global\@month#3#4\global\@day#5#6%
+        \xdef\month@name{\month@table\@month}}
+ 
+\def\parse@id@approved
+        #1#2#3#4#5#6{\global\@year19#1#2%
+        \global\@month#3#4\global\@day#5#6%
+        \xdef\month@name{\month@table\@month}}
+ 
+\def\set@date@today
+        {\edef\month@name{\month@table\month}\xdef\date@today
+        {\number\day\space\month@short\space\number\year}%
+        \let\@today=\date@today
+        \def\@date{\month@short\space\number\year}%
+        \def\@date@{\month@full\space\number\year}}
+ 
+\def\set@date@received
+        {{\expandafter\toks@\doc@id
+        \ifnum\the\toks@=\z@
+        \xdef\date@received{(No received date)}%
+        \else
+        \expandafter\parse@id@received\the\toks@
+        \xdef\date@received{\ifnum\@day=\z@??\else\number\@day\fi
+        \space\month@short\space
+        \number\@year}\fi}}
+ 
+\def\set@date@approved
+        {{\expandafter\toks@\doc@publ@date
+        \ifnum\the\toks@=\z@
+        \xdef\date@approved{(Not approved)}%
+        \process@time\else
+        \expandafter\parse@id@approved\the\toks@
+        \xdef\date@approved{\month@full\space\number\@year}\fi}}
+ 
+\def\set@dates
+        {\set@date@today\set@date@received\set@date@approved}
+ 
+\def\process@time
+        {{\expandafter\toks@\doc@id
+         \ifnum\the\toks@=\z@
+         \else
+           \count\z@=\@year   \multiply\count\z@ by365
+           \count\@ne=\@month \multiply\count\@ne by30
+           \advance\count\z@ by\count\@ne \advance\count\z@ by\@day
+           \count\tw@=\count\z@           % Received date (in days)
+           \count\z@=\year   \multiply\count\z@ by365
+           \count\@ne=\month \multiply\count\@ne by30
+           \advance\count\z@ by\count\@ne \advance\count\z@ by\day
+           \count@=\count\z@              % Today's date (in days)
+           \advance\count@ by-\count\tw@  % Difference (in days)
+           \count\z@=\count@
+           \divide\count\z@ by30
+           \multiply\count\z@ by30        % Remainder Difference mod 30
+           \count\@ne=\count@
+           \advance\count\@ne by-\count\z@
+           \divide\count@ by30
+           \ifnum\count\@ne>15 \advance\count@ by1 \fi
+           \write@nl{}
+           \ifcase\count@
+           \write@nl{In Editing: (New this month)}\or
+           \write@nl{In Editing: \the\count@\space month}\else
+           \write@nl{In Editing: \the\count@\space months}\fi
+         \fi}}
+ 
+\def\show@dates
+        {\if@SACLANTCEN@\set@dates\write@nl{}%
+        \write@nl{>> Date today: \date@today}%
+        \write@nl{\wr@spaces Received \space: \date@received}%
+        \write@nl{\wr@spaces Approved \space: \date@approved}%
+        \write@nl{}\fi}
+ 
+\def\wr@spaces{\space\space\space}
+ 
+ 
+\newif\if@else@
+ 
+\newif\if@more@keys@
+\newif\if@key@match@
+\newif\if@mapped@
+ 
+\def\get@args
+        {\@more@keys@true
+        \loop\expandafter\next@key\@args\if@more@keys@\repeat}
+ 
+\def\@option
+        <#1> <#2> {\@mapped@false\expandafter\@compare\next@<#1><#2>}
+ 
+\let\check@options\empty
+ 
+\def\is@valued#1{\expandafter\@v#1=\@vv}
+\def\@v#1={\futurelet\next\@vv}
+\def\@vv#1\@vv{\ifx\@vv\next\global\let\@compare\@keyword\else
+        \global\let\@compare\@attribute\fi}
+ 
+\def\next@key
+        #1;#2\end{\def\next{#2}%
+        \ifx\next\empty\@more@keys@false\else\def\@args{#2\end}\fi
+        \@key@match@false\def\next@{#1}{\is@valued\next@}\check@options}
+ 
+\def\@keyword
+        #1<#2><#3>{\if@key@match@\else\def\next{#1}\def\@key{#2}%
+        \ifx\next\@key\@key@match@true #3\fi\fi}
+ 
+\def\@attribute
+        #1=#2<#3><#4>{\if@key@match@\else\def\next{#1}\def\@key{#3}%
+        \ifx\next\@key\@key@match@true \def\@value{#2}#4\fi\fi}
+ 
+\def\set@map
+        [#1]=#2{\count@=\z@\def\\<##1>=##2 {\if@mapped@\relax\else
+        \def\map@{##1}\ifx\@value\map@\count@=##2\@mapped@true\fi\fi}#2%
+        \@scope\csname#1\endcsname=\count@}
+ 
+\def\set@dim
+        #1=#2{\@scope\expandafter#1#2}
+\def\set@toks
+        
+#1=#2{\@scope\expandafter\expandafter\expandafter#1\expandafter{#2}}
+ 
+\let\@local\relax
+\let\@global\global
+ 
+\let\@scope\@local
+ 
+ 
+\newtoks\explicit@options
+\newtoks\implicit@options
+ 
+\long\def\get@options
+        #1<<#2<<#3#4{\let\check@options#2%
+        \implicit@options=#3%
+        \if\noexpand#4[\def\@block{#1}\expandafter\get@options@explicit
+        \else\def\@block{#1#4}\expandafter\get@options@implicit
+        \fi}
+ 
+\def\get@options@implicit
+        {\explicit@options={}\@get@options}
+\def\get@options@explicit
+        #1] {\explicit@options={#1}\@get@options}
+\def\@get@options
+        {\edef\@args{\the\implicit@options;\the\explicit@options
+        ;\csname end\endcsname}\get@args\@block}
+ 
+\def\@transfer{\begingroup\let\@scope\@local\get@options}
+\def\g@transfer{\begingroup\let\@scope\@global\get@options}
+ 
+ 
+\newlinechar=`\|
+\def\write@ln#1{\immediate\write\sixt@@n{#1}}
+\def\write@nl#1{\message{|#1}}
+ 
+\def\@fatal#1{\write@ln{!Fatal Error: #1}}
+\def\@error#1{\write@ln{!Error: #1}}
+\def\@warning#1{\write@ln{!Warning: #1}}
+\def\@inform#1{\write@ln{!Note: #1}}
+ 
+\def\wr@log{\immediate\write\m@ne}
+ 
+\def\where
+        {\showlists\write@nl{}%
+        \write@ln{\string\pagetotal=\the\pagetotal}%
+        \write@ln{\string\pagegoal=\the\pagegoal}%
+        \write@ln{\string\pageshrink=\the\pageshrink}%
+        \write@ln{\string\prevdepth=\the\prevdepth}%
+        \write@ln{\string\prevgraf=\the\prevgraf}%
+}
+ 
+\def\@enquire
+        #1#2{\message{|#2: }%
+        {\endlinechar\m@ne \global\read\m@ne to#1}}
+ 
+\def\askfile
+        {\loop
+        \@enquire\@filename{Enter filename}
+        \ifx\@filename\empty\repeat
+        \@enquire\@pageno{Enter \string\pageno\space}
+        \ifx\@pageno\empty\pageno=\@ne\else\pageno=\number\@pageno\fi
+        \write@nl{}
+        \input\@filename}
+ 
+\def\askfileclass
+        {\loop
+        \@enquire\@filename{Enter filename}
+        \ifx\@filename\empty\repeat
+        \message{Enter doc class}
+        \@enquire\@doc@class{\wr@spaces
+        (\string\NU, \string\NR, \string\NC, \string\NS)}
+        \ifx\@doc@class\empty\else\let\doc@class\@doc@class\fi
+        \@enquire\@pageno{Enter \string\pageno\space}
+        \ifx\@pageno\empty\pageno=\@ne\else\pageno=\number\@pageno\fi
+        \write@nl{}
+        \input\@filename}
+ 
+\def\include
+        #1 {\ifx\included\relax\else\let\included\relax\input #1\fi}
+ 
+\def\showboxes
+        {\showboxbreadth=5 \showboxdepth=3}             % show box info
+\def\hideboxes
+        {\showboxbreadth=\m@ne \showboxdepth=\m@ne}     % suppress box info
+ 
+\def\trace#1 {\tracingonline=\@ne\csname tracing#1\endcsname=\maxdimen}
+\def\endtrace
+        {\tracingonline=\z@\tracingcommands=\z@\tracingstats=\z@
+        \tracingpages=\z@\tracingoutput=\z@\tracinglostchars=\@ne
+        \tracingmacros=\z@\tracingparagraphs=\z@\tracingrestores=\z@}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,399 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% FIGURES file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{FIGURES}
+ 
+ 
+\newcount\fig@source
+\newcount\fig@cap@pos
+\newdimen\fig@cap@width
+\newdimen\fig@cap@raise\fig@cap@raise=\z@% raise caption by
+\newcount\fig@orient
+ 
+\newbox\fig@box                          % box for figure
+\newbox\fig@cap@box                      % box for caption
+\newtoks\fig@no                          % figure number
+\newtoks\fig@cap                         % figure caption
+\newdimen\fig@inset    \fig@inset=\z@    % caption inset
+\newdimen\fig@tuck     \fig@tuck=9.5\cm  % tuck caption if figure width 
+less
+\newtoks\fig@scale     \fig@scale={1}    % reduction factor
+ 
+\newtoks\fig@eps                         % PostScript file
+\newdimen\fig@width    \fig@width=\z@    % figure width
+\newdimen\fig@height   \fig@height=\z@   % figure height 
+ 
+\newcount\fig@lay      \fig@lay=\z@      % case selector for 
+overlay/underlay
+\newtoks\x@fig@eps                       % PostScript underlay/overlay file
+\newdimen\x@fig@width  \x@fig@width=\z@  % figure overlay/underlay width
+\newdimen\x@fig@height \x@fig@height=\z@ % figure overlay/underlay height
+ 
+\newif\if@ps@          \@ps@false        % PostScript flag
+ 
+ 
+\def\fig@options
+        {%
+        \@option <source>    <\set@map[fig@source]={\\<art>=0 \\<ps>=1 }>
+        \@option <caption>   <\set@map[fig@cap@pos]={\\<default>=0
+                                      \\<below>=1 \\<above>=2
+                                      \\<right>=3 \\<left>=4
+                                      \\<bot-right>=5 \\<top-right>=6
+                                      \\<top-left>=7 \\<bot-left>=8 
+                                      \\<none>=-1 }>
+        \@option <orient>    <\set@map[fig@orient]={\\<portrait>=0
+                                                   \\<landscape>=1 }>
+%
+        \@option <file>      <\set@toks\fig@eps=\@value>
+        \@option <underlay>  <\set@toks\x@fig@eps=\@value\fig@lay\@ne>
+        \@option <overlay>   <\set@toks\x@fig@eps=\@value\fig@lay\tw@>
+        \@option <scale>     <\set@toks\fig@scale=\@value>
+        \@option <size>      <\expandafter\get@fig@sizes\@value!>
+        \@option <height>    <\set@dim\fig@height=\@value\cm>
+        \@option <width>     <\set@dim\fig@width=\@value\cm>
+        \@option <inset>     <\set@dim\fig@inset=\@value\cm>
+        \@option <tuck>      <\set@dim\fig@tuck=\@value\cm>
+        \@option <raise>     <\set@dim\fig@cap@raise=\@value\cm>
+        }
+ 
+\def\get@fig@sizes
+        #1/#2!{\set@dim\fig@width=#1\cm\set@dim\fig@height=#2\cm}
+ 
+ 
+\newtoks\everyfigure
+ 
+\def\figure
+        {\@transfer\@figure<<\fig@options<<\everyfigure}
+\def\@figure
+        {\ifnum\fig@cap@pos=\m@ne\set@figure
+        \else\expandafter\get@caption\fi}
+ 
+\let\endfigure\relax
+ 
+\def\get@caption
+        #1. #2\endfigure{\fig@no={#1}\fig@cap={#2}\set@figure}
+ 
+\def\set@figure
+        {\ifnum\fig@source=\@ne\@ps@true\get@BBox
+        \ifnum\fig@lay>\z@\x@get@BBox\fi
+        \else\ifdim\fig@width=\z@\ifdim\fig@width=\z@
+                \@error{No <size> declared for figure}\fi\fi
+                \fig@width=\the\fig@scale\fig@width
+                \fig@height=\the\fig@scale\fig@height
+        \fi
+        \set@fig@box\set@cap@box\set@fig@cap@boxes
+        \endgroup
+        }
+ 
+\def\set@fig@box
+        {\setbox\fig@box\vbox{\hsize=\the\fig@width
+        \if@ps@\if@show@figs@\@corners@false\fi\fi
+        \offinterlineskip
+        \vbox{\hrule \@width\the\fig@width \@depth\z@ \@height\z@}
+        \top@corners
+        \vbox{\vrule \@width\z@ \@depth\z@ \@height\the\fig@height}
+        \bottom@corners
+        \if@ps@\if@show@figs@
+        \ifcase\fig@lay\special\@tokens
+        \or\special\@tokens\special\x@tokens   % reverse order
+        \or\special\x@tokens\special\@tokens   % reverse order
+        \fi\fi\fi\@ps@false
+        }}
+ 
+\def\set@cap@box
+        {\ifcase\fig@cap@pos
+        \ifdim\fig@width>\page@width\fig@cap@width\page@width
+                \else
+                \ifdim\fig@tuck=\z@\else
+                \ifdim\fig@width<\fig@tuck
+                \fig@cap@width=\page@width
+                \advance\fig@cap@width by-\fig@width
+                \ifdim\fig@inset=\z@\fig@inset=-.5\cm\fi
+                \advance\fig@cap@width by\fig@inset\fig@cap@pos\thr@@%
+                \else\fig@cap@width\fig@width
+                \fi\fi
+        \fi
+        \or
+        \ifdim\fig@width>\page@width\fig@cap@width\page@width
+        \else\fig@cap@width\fig@width\fi
+        \or
+        \ifdim\fig@width>\page@width\fig@cap@width\page@width
+        \else\fig@cap@width\fig@width\fi
+        \else
+        \ifdim\fig@width<\page@width \fig@cap@width=\page@width
+        \advance\fig@cap@width by-\fig@width
+        \ifdim\fig@inset=\z@\fig@inset=-.5\cm\fi
+        \advance\fig@cap@width by\fig@inset
+        \else\fig@cap@width\page@width\fig@cap@pos\z@\fi
+        \fi
+        \setbox\fig@cap@box\vbox{\hsize=\fig@cap@width
+        \text@fonts@B\rightskip\z@ plus2em
+        \noindent\bf Figure~\the\fig@no\quad\it\the\fig@cap
+        \ifdim\fig@cap@raise=\z@\else\vskip\fig@cap@raise\fi
+        }}
+ 
+\def\set@fig@cap@boxes%                                        CAPTION
+        {\ifcase\fig@cap@pos%                                    PLACEMENT
+        \hbox{\vbox{\box\fig@box\vskip.5\cm\box\fig@cap@box}}%     default
+        \or\hbox{\vbox{\box\fig@box\vskip.5\cm\box\fig@cap@box}}%  below
+        \or\hbox{\vbox{\box\fig@cap@box\vskip.5\cm\box\fig@box}}%  above
+        \or\vbox{\hbox{\box\fig@box\kern-\fig@inset
+                \ulap{\unvbox\fig@cap@box}}}%                      right
+        \or\vbox{\hbox{\ulap{\unvbox\fig@cap@box}\kern-\fig@inset
+                \box\fig@box}}%                                    left
+        \or\vbox{\hbox{\box\fig@box\kern-\fig@inset
+                \ulap{\unvbox\fig@cap@box}}}%                      
+bot-right
+        \or\vbox{\hbox{\vtop{\unvbox\fig@box}\kern-\fig@inset
+                \dlap{\unvbox\fig@cap@box}}}%                      
+top-right
+        \or\vbox{\hbox{\dlap{\unvbox\fig@cap@box}\kern-\fig@inset
+                \vtop{\unvbox\fig@box}}}%                          top-left
+        \or\vbox{\hbox{\ulap{\unvbox\fig@cap@box}\kern-\fig@inset
+                \box\fig@box}}%                                    bot-left
+        \else\ifnum\fig@cap@pos=\m@ne\box\fig@box\fi             no caption
+        \fi
+        }
+ 
+ 
+\newif\if@continue@
+\newread\eps@file
+ 
+\global\catcode`\%=11 \global\catcode`\!=11
+ 
+\def\get@BBox
+        {\global\catcode`\%=11 \global\catcode`\!=11
+        \global\catcode`\_=11 \global\catcode`\&=11
+        \global\catcode`\:=10 \global\catcode`\^^?=9
+        \edef\@{\the\fig@eps}\relax
+        \ifx\@\empty\fig@eps={FIGURE_\the\fig@no}\fi
+        \openin\eps@file=\the\fig@eps.EPS
+        \ifeof\eps@file\@error{PostScript file is missing}\fi
+        \def\ps@comment{%%}\def\ps@signature{%!}\count@=\@ne
+        \def\ps@BoundingBox{BoundingBox}\relax
+        \def\ps@EndComments{EndComments}\relax
+        \loop
+        {\endlinechar=`\>\global\read\eps@file to\ps@comment@line}\relax
+        \ifnum\count@=\@ne
+                \expandafter\parse@ps@first@line\ps@comment@line
+                \ifx\ps@first@word\ps@signature\@continue@true
+                \else\@error{This is NOT a conforming
+                        PostScript file}\@continue@false
+                \fi
+        \else
+                \expandafter\parse@ps@comment@line\ps@comment@line
+                \ifx\ps@first@word\ps@comment\@continue@true
+                \ifx\ps@keyword\ps@BoundingBox
+                \expandafter\build@special\ps@value\@continue@false
+                \else
+                \ifx\ps@keyword\ps@EndComments\@error{`BoundingBox'
+                        NOT found in header comments}\@continue@false
+                \else\@continue@true\fi\fi
+                \else\@error{This is NOT a conforming
+                             PostScript file}\@continue@false
+                \fi
+        \fi
+        \@incr\count@
+        \if@continue@
+        \repeat
+        \global\catcode`\%=14 \global\catcode`\!=12
+        \global\catcode`\_=8 \global\catcode`\&=4
+        \global\catcode`\:=12 \global\catcode`\^^?=15}
+ 
+\global\catcode`\%=14 \global\catcode`\!=12 
+ 
+ 
+\newtoks\ps@tokens \newtoks\pstokens
+ 
+\newif\if@show@figs@
+\def\illustrate{\@show@figs@true}
+\def\noillustrate{\@show@figs@false}
+ 
+\def\ps
+        #1{\if@PostScript@\@ps@true\edef\@tokens{{#1}}\else
+        \@error{No PostScript printer was declared}\fi}
+ 
+ 
+\def\parse@ps@first@line
+        #1#2#3>{\def
+        \ps@first@word{#1#2}\def\ps@keyword{#3>}%
+        }
+ 
+\def\parse@ps@comment@line
+        #1#2#3 #4>{\def
+        \ps@first@word{#1#2}\def\ps@keyword{#3}\edef\ps@value{#4>}%
+        }
+ 
+\newdimen\BBox@wd      % width of EPS figure bounding box in bp
+\newdimen\BBox@ht      % height of EPS figure bounding box in bp
+\newcount\eps@wd@sp    % width of EPS figure bounding box in sp
+\newcount\eps@ht@sp    % height of EPS figure bounding box in sp
+\newcount\fig@wd@sp    % width of figure in sp
+\newcount\fig@ht@sp    % height of figure in sp
+\newtoks\eps@xscale    % x-scaling string for PostScript
+\newtoks\eps@yscale    % y-scaling string for PostScript
+ 
+\def\build@special
+        #1 #2 #3 #4>{\relax
+        \ifcase\fig@orient
+                \BBox@wd=#3\@bp \advance\BBox@wd by-#1\@bp
+                \BBox@ht=#4\@bp \advance\BBox@ht by-#2\@bp
+                \ps@tokens={#1 #2 @t0}\relax
+        \else
+                \BBox@wd=#4\@bp \advance\BBox@ht by-#2\@bp
+                \BBox@ht=#3\@bp \advance\BBox@wd by-#1\@bp
+                \ps@tokens={#1 #2 #3 @t1}\relax
+        \fi
+        \eps@xscale={\the\fig@scale\space}\relax
+        \eps@yscale={\the\fig@scale\space}\relax
+        \ifdim\fig@width=\z@
+                \ifdim\fig@height=\z@ \fig@width=\the\fig@scale\BBox@wd \fi
+        \else
+        \fig@width=\the\fig@scale\fig@width \eps@wd@sp=\BBox@wd
+        \fig@wd@sp=\fig@width
+        \divide\eps@wd@sp by\@M \divide\fig@wd@sp by\@M
+        \eps@xscale={\the\fig@wd@sp\space \the\eps@wd@sp\space div
+                          \the\fig@scale\space mul\space}\relax
+        \ifdim\fig@height=\z@ \count@=\BBox@ht
+        \divide\count@ by\eps@wd@sp \multiply\count@ by\fig@wd@sp
+        \fig@height=\the\fig@scale\count@
+        \eps@yscale={dup }\fi
+        \fi
+        \ifdim\fig@height=\z@
+                \fig@height=\the\fig@scale\BBox@ht
+        \else
+        \fig@height=\the\fig@scale\fig@height \eps@ht@sp=\BBox@ht
+        \fig@ht@sp=\fig@height
+        \divide\eps@ht@sp by\@M \divide\fig@ht@sp by\@M
+        \eps@yscale={\the\fig@ht@sp\space \the\eps@ht@sp\space div
+                          \the\fig@scale\space mul\space}\relax
+        \ifdim\fig@width=\z@ \count@=\BBox@wd
+        \divide\count@ by\eps@ht@sp \multiply\count@ by\fig@ht@sp
+        \fig@width=\the\fig@scale\count@
+        \eps@xscale=\eps@yscale\eps@yscale={dup }\fi
+        \fi
+        \if@show@figs@
+        \edef\@tokens
+        {{INSERT EPS_INPUTS:\the\fig@eps,
+          STRING="\the\eps@xscale\the\eps@yscale scale
+                  \the\ps@tokens\the\pstokens"}}\relax
+        \edef\@file{\the\fig@eps}\relax
+        \@inform{Including PostScript figure "\@file"}\relax
+        \fi
+        \global\catcode`\%=14}
+ 
+ 
+\global\catcode`\%=11 \global\catcode`\!=11
+ 
+\def\x@get@BBox
+        {\global\catcode`\%=11 \global\catcode`\!=11
+        \global\catcode`\_=11 \global\catcode`\&=11
+        \global\catcode`\:=10 \global\catcode`\^^?=9
+        \openin\eps@file=\the\x@fig@eps.EPS
+        \ifeof\eps@file
+        \ifcase\fig@lay\or
+                \@error{PostScript underlay file is missing - PLEASE CHECK}
+        \or
+                \@error{PostScript overlay file is missing - PLEASE CHECK}
+        \fi\fi
+        \def\ps@comment{%%}\def\ps@signature{%!}\count@=\@ne
+        \def\ps@BoundingBox{BoundingBox}\relax
+        \def\ps@EndComments{EndComments}\relax
+        \loop
+        {\endlinechar=`\>\global\read\eps@file to\ps@comment@line}\relax
+        \ifnum\count@=\@ne
+                \expandafter\parse@ps@first@line\ps@comment@line
+                \ifx\ps@first@word\ps@signature\@continue@true
+                \else\@error{This is NOT a conforming 
+                        PostScript file}\@continue@false
+                \fi
+        \else
+                \expandafter\parse@ps@comment@line\ps@comment@line
+                \ifx\ps@first@word\ps@comment\@continue@true
+                \ifx\ps@keyword\ps@BoundingBox
+                \expandafter\x@build@special\ps@value\@continue@false
+                \else
+                \ifx\ps@keyword\ps@EndComments\@error{`BoundingBox'
+                        NOT found in header comments}\@continue@false
+                \else\@continue@true\fi\fi
+                \else\@error{This is NOT a conforming
+                             PostScript file}\@continue@false
+                \fi
+        \fi
+        \@incr\count@
+        \if@continue@
+        \repeat
+        \global\catcode`\%=14 \global\catcode`\!=12
+        \global\catcode`\_=8 \global\catcode`\&=4
+        \global\catcode`\:=12 \global\catcode`\^^?=15}
+ 
+\global\catcode`\%=14 \global\catcode`\!=12 
+ 
+ 
+\def\x@build@special
+        #1 #2 #3 #4>{\relax
+        \ifcase\fig@orient
+                \BBox@wd=#3\@bp \advance\BBox@wd by-#1\@bp
+                \BBox@ht=#4\@bp \advance\BBox@ht by-#2\@bp
+                \ps@tokens={#1 #2 @t0}\relax
+        \else
+                \BBox@wd=#4\@bp \advance\BBox@ht by-#2\@bp
+                \BBox@ht=#3\@bp \advance\BBox@wd by-#1\@bp
+                \ps@tokens={#1 #2 #3 @t1}\relax
+        \fi
+        \eps@xscale={\the\fig@scale\space}\relax
+        \eps@yscale={\the\fig@scale\space}\relax
+        \ifdim\x@fig@width=\z@
+                \ifdim\x@fig@height=\z@ 
+\x@fig@width=\the\fig@scale\BBox@wd \fi
+        \else
+        \x@fig@width=\the\fig@scale\x@fig@width \eps@wd@sp=\BBox@wd
+        \fig@wd@sp=\x@fig@width
+        \divide\eps@wd@sp by\@M \divide\fig@wd@sp by\@M
+        \eps@xscale={\the\fig@wd@sp\space \the\eps@wd@sp\space div
+                          \the\fig@scale\space mul\space}\relax
+        \ifdim\x@fig@height=\z@ \count@=\BBox@ht
+        \divide\count@ by\eps@wd@sp \multiply\count@ by\fig@wd@sp
+        \x@fig@height=\the\fig@scale\count@
+        \eps@yscale={dup }\fi
+        \fi
+        \ifdim\x@fig@height=\z@
+                \x@fig@height=\the\fig@scale\BBox@ht
+        \else
+        \x@fig@height=\the\fig@scale\x@fig@height \eps@ht@sp=\BBox@ht
+        \fig@ht@sp=\x@fig@height
+        \divide\eps@ht@sp by\@M \divide\fig@ht@sp by\@M
+        \eps@yscale={\the\fig@ht@sp\space \the\eps@ht@sp\space div
+                          \the\fig@scale\space mul\space}\relax
+        \ifdim\x@fig@width=\z@ \count@=\BBox@wd
+        \divide\count@ by\eps@ht@sp \multiply\count@ by\fig@ht@sp
+        \x@fig@width=\the\fig@scale\count@
+        \eps@xscale=\eps@yscale\eps@yscale={dup }\fi
+        \fi
+        \if@show@figs@
+        \begingroup
+        \count\z@=\fig@width  \count\@ne=\x@fig@width
+        \count\tw@=\fig@height \count\thr@@=\x@fig@height
+        \xdef\@tokens
+        {{INSERT EPS_INPUTS:\the\x@fig@eps,
+          STRING="\the\eps@xscale\the\eps@yscale scale\space
+                  \the\count\z@\space\the\count\@ne\space div\space
+                  \the\count\tw@\space\the\count\thr@@\space div\space
+                  scale\space
+                  \the\ps@tokens\the\pstokens"}}\relax
+        \edef\@file{\the\x@fig@eps}\relax
+        \ifcase\fig@lay\or
+        \@inform{Including PostScript underlay "\@file"}\relax
+        \or
+        \@inform{Including PostScript overlay "\@file"}\relax
+        \fi
+        \endgroup
+        \fi
+        \global\catcode`\%=14}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

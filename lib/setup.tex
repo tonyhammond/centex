@@ -1,0 +1,38 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% SETUP file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{SETUP}
+ 
+ 
+\let\@input=\input       % formatting for log file
+\def\input{\write@nl{}\@input}
+ 
+\newif\if@draft@
+\def\draft{\@draft@true\@corners@true}
+\def\final{\@draft@false\@corners@false\@regmarks@true\overfullrule=\z@}
+ 
+\draft                  % set \draft as default
+\normalpaging           % use default pagination scheme
+\noillustrate           % do not paint PostScript \figure's
+ 
+\hideboxes              % do not show box information
+ 
+ 
+\hyphenation{wave-guide hy-dro-phone back-scat-ter-ing sea-floor}
+ 
+ 
+\text@fonts@A
+\normalbaselines\rm      % select roman font
+\nonfrenchspacing        % punctuation affects the spacing
+ 
+ 
+\def\privatize
+        {\ifx\VMS@grp\STI@grp\global\catcode`@=11\relax\else
+        \@error{`\string\privatize' is reserved}\fi}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

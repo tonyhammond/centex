@@ -1,0 +1,313 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% FONTS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{FONTS}
+ 
+ 
+\let\fam@rm\z@      % \rm is family 0
+\let\fam@mi\@ne     % math italic (\mit) is family 1
+\let\fam@sy\tw@     % math symbols (\cal) is family 2
+\let\fam@ex\thr@@   % math extensions is family 3
+ 
+\newfam\fam@it      % \it is family 4
+\newfam\fam@sl      % \sl is family 5
+\newfam\fam@bf      % \bf is family 6
+\newfam\fam@tt      % \tt is family 7
+\newfam\fam@ss      % \ss is family 8
+\newfam\fam@sq      % \sq is family 9
+\newfam\fam@sqi     % \sqi is family 10
+\newfam\fam@bmi     % \bmi is family 11
+\newfam\fam@bms     % \bms is family 12
+% \newfam\fam@msa     % \msa is family 13
+% \newfam\fam@msb     % \msb is family 14
+ 
+\def\cal{\fam\tw@}
+\def\mit{\fam\@ne}
+\def\bmi{\fam11}
+\def\bms{\fam12}
+% \def\msa{\fam13}
+% \def\msb{\fam14}
+\let\bm\bmi
+ 
+ 
+\def\magstep
+        #1{\ifcase#1 1000\or1200\or1440\or1728
+        \or2074\or2488\or2986\fi\relax}
+ 
+\def\@magscale#1{ scaled \magstep #1}
+\def\@halfmag{ scaled \magstephalf}
+ 
+ 
+\def\set@fonts
+        #1=#2, #3, #4.
+        {\textfont#1=#2\scriptfont#1=#3\scriptscriptfont#1=#4}
+ 
+\def\set@strut
+        {\setbox\strutbox=\hbox
+        {\vrule \@height.7\baselineskip \@depth.3\baselineskip \@width\z@
+        }}
+ 
+ 
+  \font\six@rm  = cmr6      % roman
+  \font\six@mi  = cmmi6     % math italic
+  \font\six@sy  = cmsy6     % math symbols
+% \font\six@ex  = ???       % math extension
+% \font\six@it  = ???       % text italic
+% \font\six@sl  = ???       % slanted
+  \font\six@bf  = cmbx6     % extended bold
+% \font\six@tt  = ???       % typewriter
+% \font\six@ss  = ???       % sans serif
+ 
+% \font\six@mib = cmmib6    % bold math italic
+% \font\six@syb = cmbsy6    % bold symbols
+% \font\six@bfs = ???       % extended bold slanted
+% \font\six@ssi = ???       % italic sans serif
+ 
+\skewchar\six@mi ='177      % for placement of accents
+\skewchar\six@sy ='60       % for placement of math accents
+%\hyphenchar\six@tt = \m@ne % suppress hyphenation in \tt font
+ 
+ 
+  \font\seven@rm  = cmr7      % roman
+  \font\seven@mi  = cmmi7     % math italic
+  \font\seven@sy  = cmsy7     % math symbols
+  \font\seven@ex  = cmex7     % math extension
+  \font\seven@it  = cmti7     % text italic
+% \font\seven@sl  = ???       % slanted
+  \font\seven@bf  = cmbx7     % extended bold
+% \font\seven@tt  = ???       % typewriter
+% \font\seven@ss  = ???       % sans serif
+ 
+% \font\seven@mib = cmmib7    % bold math italic
+% \font\seven@syb = cmbsy7    % bold symbols
+% \font\seven@bfs = ???       % extended bold slanted
+% \font\seven@ssi = ???       % italic sans serif
+ 
+\skewchar\seven@mi ='177      % for placement of accents
+\skewchar\seven@sy ='60       % for placement of math accents
+%\hyphenchar\seven@tt = \m@ne % suppress hyphenation in \tt font
+ 
+ 
+  \font\eight@rm  = cmr8      % roman
+  \font\eight@mi  = cmmi8     % math italic
+  \font\eight@sy  = cmsy8     % math symbols
+  \font\eight@ex  = cmex8     % math extension
+  \font\eight@it  = cmti8     % text italic
+  \font\eight@sl  = cmsl8     % slanted
+  \font\eight@bf  = cmbx8     % extended bold
+  \font\eight@tt  = cmtt8     % typewriter
+  \font\eight@ss  = cmss8     % sans serif
+ 
+% \font\eight@mib = cmmib8    % bold math italic
+% \font\eight@syb = cmbsy8    % bold symbols
+% \font\eight@bfs = ???       % extended bold slanted
+% \font\eight@ssi = cmssi8    % italic sans serif
+ 
+\skewchar\eight@mi ='177      % for placement of accents
+\skewchar\eight@sy ='60       % for placement of math accents
+\hyphenchar\eight@tt = \m@ne  % suppress hyphenation in \tt font
+ 
+ 
+  \font\ten@rm  = cmr10     % roman
+  \font\ten@mi  = cmmi10    % math italic
+  \font\ten@sy  = cmsy10    % math symbols
+  \font\ten@ex  = cmex10    % math extension
+  \font\ten@it  = cmti10    % text italic
+  \font\ten@sl  = cmsl10    % slanted
+  \font\ten@bf  = cmbx10    % extended bold
+  \font\ten@tt  = cmtt10    % typewriter
+  \font\ten@ss  = cmss10    % sans serif
+ 
+  \font\ten@mib = cmmib10   % bold math italic
+  \font\ten@syb = cmbsy10   % bold math symbols
+% \font\ten@msa = msam10    % extra math symbols - series a
+% \font\ten@msb = msbm10    % extra math symbols - series b
+% \font\ten@bfs = cmbxsl10  % extended bold slanted
+% \font\ten@ssi = cmssi10   % italic sans serif
+ 
+\skewchar\ten@mi ='177      % for placement of accents
+%\skewchar\ten@mib ='177    % for placement of accents
+\skewchar\ten@sy ='60       % for placement of math accents
+%\skewchar\ten@syb ='60     % for placement of math accents
+\hyphenchar\ten@tt = \m@ne  % suppress hyphenation in \tt font
+ 
+ 
+  \font\ten@rm@  = cmr10     \@halfmag  % roman
+  \font\ten@mi@  = cmmi10    \@halfmag  % math italic
+  \font\ten@sy@  = cmsy10    \@halfmag  % math symbols
+  \font\ten@ex@  = cmex10    \@halfmag  % math extension
+  \font\ten@it@  = cmti10    \@halfmag  % text italic
+  \font\ten@sl@  = cmsl10    \@halfmag  % slanted
+  \font\ten@bf@  = cmbx10    \@halfmag  % extended bold
+  \font\ten@tt@  = cmtt10    \@halfmag  % typewriter
+  \font\ten@ss@  = cmss10    \@halfmag  % sans serif
+ 
+  \font\ten@mib@ = cmmib10   \@halfmag  % bold math italic
+  \font\ten@syb@ = cmbsy10   \@halfmag  % bold math symbols
+% \font\ten@msa@ = msam10    \@halfmag  % extra math symbols - series a
+% \font\ten@msb@ = msbm10    \@halfmag  % extra math symbols - series b
+% \font\ten@bfs@ = cmbxsl10  \@halfmag  % extended bold slanted
+% \font\ten@ssi@ = cmssi10   \@halfmag  % italic sans serif
+ 
+\skewchar\ten@mi@ ='177      % for placement of accents
+\skewchar\ten@mib@ ='177     % for placement of accents
+\skewchar\ten@sy@ ='60       % for placement of math accents
+\skewchar\ten@syb@ ='60      % for placement of math accents
+\hyphenchar\ten@tt@ = \m@ne  % suppress hyphenation in \tt font
+ 
+ 
+  \font\six@rm@V=cmr6 \@magscale5          % for vugraphs
+  \font\six@mi@V=cmmi6 \@magscale5         % for vugraphs
+  \font\six@sy@V=cmsy6 \@magscale5         % for vugraphs
+ 
+ 
+  \font\eight@rm@V=cmr8 \@magscale5        % for vugraphs
+  \font\eight@mi@V=cmmi8 \@magscale5       % for vugraphs
+  \font\eight@sy@V=cmsy8 \@magscale5       % for vugraphs
+ 
+ 
+  \font\ten@rm@V = cmr10      \@magscale5  % roman
+  \font\ten@mi@V = cmmi10     \@magscale5  % math italic
+  \font\ten@sy@V = cmsy10     \@magscale5  % math symbols
+  \font\ten@ex@V = cmex10     \@magscale5  % math extension
+  \font\ten@it@V = cmti10     \@magscale5  % text italic
+  \font\ten@sl@V = cmsl10     \@magscale5  % slanted
+  \font\ten@bf@V = cmbx10     \@magscale5  % extended bold
+  \font\ten@tt@V = cmtt10     \@magscale5  % typewriter
+  \font\ten@ss@V = cmss10     \@magscale5  % sans serif
+ 
+  \font\ten@mib@V = cmmib10   \@magscale5  % bold math italic
+% \font\ten@syb@V = cmbsy10   \@magscale5  % bold symbols
+% \font\ten@bfs@V = cmbxsl10  \@magscale5  % extended bold slanted
+% \font\ten@ssi@V = cmssi10   \@magscale5  % italic sans serif
+% \font\ten@ssb@V = cmssbx10  \@magscale5  % bold sans serif
+ 
+\skewchar\ten@mi@V ='177      % for placement of accents
+\skewchar\ten@mib@V ='177     % for placement of accents
+\skewchar\ten@sy@V ='60       % for placement of math accents
+\hyphenchar\ten@tt@V = \m@ne  % suppress hyphenation in \tt font
+ 
+ 
+\def\text@fonts@A
+       {%
+       \set@fonts\fam@rm  = \ten@rm@, \eight@rm,  \six@rm.
+       \set@fonts\fam@mi  = \ten@mi@, \eight@mi,  \six@mi.
+       \set@fonts\fam@sy  = \ten@sy@, \eight@sy,  \six@sy.
+       \set@fonts\fam@ex  = \ten@ex@, \ten@ex@, \ten@ex@.
+       \set@fonts\fam@it  = \ten@it@, \ten@it, \ten@it.
+       \set@fonts\fam@sl  = \ten@sl@, \ten@sl, \ten@sl.
+       \set@fonts\fam@bf  = \ten@bf@, \eight@bf,  \six@bf.
+       \set@fonts\fam@tt  = \ten@tt@, \ten@tt@,    \ten@tt@.  
+       \set@fonts\fam@ss  = \ten@ss@, \ten@ss@, \ten@ss@.
+       \set@fonts\fam@sq  = \eight@ssq@I, \eight@ssq@I, \eight@ssq@I.
+       \set@fonts\fam@sqi = \eight@ssqi@I, \eight@ssqi@I, \eight@ssqi@I.
+       \set@fonts\fam@bmi = \ten@mib@, \ten@mib@, \ten@mib@.
+       \set@fonts\fam@bms = \ten@syb@, \ten@syb@, \ten@syb@.
+       % \set@fonts\fam@msa = \ten@msa@, \ten@msa@, \ten@msa@.
+       % \set@fonts\fam@msb = \ten@msb@, \ten@msb@, \ten@msb@.
+       %
+       \def\rm{\fam\fam@rm\ten@rm@}%
+       \def\it{\fam\fam@it\ten@it@}%
+       \def\sl{\fam\fam@sl\ten@sl@}%
+       \def\ss{\fam\fam@ss\ten@ss@}%
+       \def\bf{\fam\fam@bf\ten@bf@}%
+       \def\tt{\fam\fam@tt\ten@tt@}%
+       \def\sq{\fam\fam@sq\eight@ssq@I}%
+       \def\sqi{\fam\fam@sqi\eight@ssqi@I}%
+       %
+       \normalbaselineskip=13\p@ \normalbaselines
+       \set@strut \rm}
+ 
+ 
+\def\text@fonts@B
+       {%
+       \set@fonts\fam@rm  = \ten@rm, \seven@rm, \six@rm.
+       \set@fonts\fam@mi  = \ten@mi, \seven@mi, \six@mi.
+       \set@fonts\fam@sy  = \ten@sy, \seven@sy, \six@sy.
+       \set@fonts\fam@ex  = \ten@ex, \ten@ex,   \ten@ex.
+       \set@fonts\fam@it  = \ten@it, \ten@it,   \ten@it.
+       \set@fonts\fam@sl  = \ten@sl, \ten@sl,   \ten@sl.
+       \set@fonts\fam@bf  = \ten@bf, \seven@bf, \six@bf.
+       \set@fonts\fam@tt  = \ten@tt, \ten@tt,   \ten@tt.
+       \set@fonts\fam@ss  = \ten@ss, \ten@ss,   \ten@ss.
+       \set@fonts\fam@sq  = \eight@ssq@, \eight@ssq@, \eight@ssq@.
+       \set@fonts\fam@sqi = \eight@ssqi@, \eight@ssqi@, \eight@ssqi@.
+       \set@fonts\fam@bmi = \ten@mib, \ten@mib, \ten@mib.
+       \set@fonts\fam@bms = \ten@syb, \ten@syb, \ten@syb.
+       % \set@fonts\fam@msa = \ten@msa, \ten@msa, \ten@msa.
+       % \set@fonts\fam@msb = \ten@msb, \ten@msb, \ten@msb.
+       %
+       \def\rm{\fam\fam@rm\ten@rm}%
+       \def\it{\fam\fam@it\ten@it}%
+       \def\sl{\fam\fam@sl\ten@sl}%
+       \def\ss{\fam\fam@ss\ten@ss}%
+       \def\bf{\fam\fam@bf\ten@bf}%
+       \def\tt{\fam\fam@tt\ten@tt}%
+       \def\sq{\fam\fam@sq\eight@ssq@}%
+       \def\sqi{\fam\fam@sqi\eight@ssqi@}%
+       %
+       \normalbaselineskip=11\p@ \normalbaselines
+       \set@strut \rm}
+ 
+ 
+\def\vue@fonts@A
+       {%
+       \set@fonts\fam@rm  = \ten@rm@V,  \eight@rm@V, \six@rm@V.
+       \set@fonts\fam@mi  = \ten@mi@V,  \eight@mi@V, \six@mi@V.
+       \set@fonts\fam@sy  = \ten@sy@V,  \eight@sy@V, \six@sy@V.
+       \set@fonts\fam@ex  = \ten@ex@V,  \ten@ex@V,   \ten@ex@V.
+       \set@fonts\fam@it  = \ten@it@V,  \ten@it@V,   \ten@it@V.
+       \set@fonts\fam@sl  = \ten@sl@V,  \ten@sl@V,   \ten@sl@V.
+       \set@fonts\fam@bf  = \ten@bf@V,  \ten@bf@V,   \ten@bf@V.
+       \set@fonts\fam@tt  = \ten@tt@V,  \ten@tt@V,   \ten@tt@V.
+       \set@fonts\fam@ss  = \ten@ss@V,  \ten@ss@V,   \ten@ss@V.
+       \set@fonts\fam@bmi = \ten@mib@V, \ten@mib@V,  \ten@mib@V.
+       %
+       \def\rm{\fam\fam@rm\ten@rm@V}%
+       \def\it{\fam\fam@it\ten@it@V}%
+       \def\sl{\fam\fam@sl\ten@sl@V}%
+       \def\ss{\fam\fam@ss\ten@ss@V}%
+       \def\bf{\fam\fam@bf\ten@bf@V}%
+       \def\tt{\fam\fam@tt\ten@tt@V}%
+       %
+       \normalbaselineskip=35\p@ \normalbaselines
+       \set@strut \rm}
+ 
+ 
+\setbox0=\hbox{\ten@ex B} \p@renwd=\wd0 % width of the big left (
+ 
+\def\showhyphens
+        #1{\setbox0\vbox{\parfillskip\z@skip\hsize\maxdimen\ten@rm
+        \pretolerance\m@ne\tolerance\m@ne\hbadness0\showboxdepth0\ #1}}
+ 
+ 
+  \font\ten@ss@I=cmss10 \@magscale1        % for titlepage
+  \font\ten@ss@II=cmss10 \@magscale2       % for cover and title pages
+  \font\ten@ss@III=cmss10 \@magscale3      % for coverpage
+ 
+  \font\ten@ssi@II=cmssi10 \@magscale2     % for cover and title pages
+  \font\ten@ssi@III=cmssi10 \@magscale3    % for coverpage
+  \font\ten@ssi@IV=cmssi12 \@magscale4     % for headings
+  \font\ten@ssi@VI=cmssi12 \@magscale6     % for headings
+ 
+  \font\ten@ssbf@=cmssbx10 \@halfmag       % for Distribution string
+  \font\ten@ssbf@II=cmssbx10 \@magscale2   % for coverpage
+  \font\ten@ssbf@IV=cmssbx10 \@magscale4   % for cover classification
+  \font\ten@ssbf@V=cmbx10 \@magscale5      % for vugraph titles
+ 
+  \font\eight@ssq@=cmssq8 \@halfmag        % for tagline classification
+  \font\eight@ssqi@=cmssqi8 \@halfmag      % for tagline tags
+  \font\eight@ssq@I=cmssq8 \@magscale1     % 
+  \font\eight@ssqi@I=cmssqi8 \@magscale1   % for subheadings
+ 
+  \font\twelve@rm@=cmr12 \@halfmag         % for \cen@stamp cap ess
+  \font\eight@rm@=cmr8 \@halfmag           % for \cen@stamp small caps
+ 
+  % \font\@nato=nato                         % for \NATO@star
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

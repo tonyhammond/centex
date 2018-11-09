@@ -1,0 +1,111 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% SECTIONS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{SECTIONS}
+ 
+ 
+\newtoks\section@label
+ 
+\outer\def\section
+        {\g@transfer\@section<<\class@options<<\everyclass}
+\def\@section
+        #1. #2\par{\if#1\empty\write@nl{<Section> }\else
+        \write@nl{<Section #1> }\enspace\fi
+        \@@section\z@{#1}{#2}}
+ 
+\outer\def\appendix
+        {\g@transfer\@appendix<<\class@options<<\everyclass}
+\def\@appendix
+        #1. #2\par{\if#1\empty\write@nl{<Appendix> }\else
+        \write@nl{<Appendix #1> }\enspace\fi
+        \@@section\@ne{#1}{#2}}
+ 
+\def\@@section
+        #1#2#3{\endgroup\@newpage\@newclass\vglue.05\page@height
+        \ifnum\pageno<\@ne\pageno\@ne\fi
+        \ifnum\page@style=\@ne \pageno=\@ne
+        \section@label=\expandafter{#2}%
+        \fi
+        \text@fonts@A \parindent\z@
+        {\vtop{\baselineskip16\p@\ragged@left
+        \hbadness\@M
+        \ifcase#1\ten@ssi@VI#2\or\ten@ssi@IV Appendix #2\fi
+        \vadjust{\vskip6\p@}\linebreak
+        \ten@ss@II#3\linebreak
+        \raise6\p@\line{\hrulefill}}\par
+        }\@nobreak\smallskip}
+ 
+\def\ragged@left
+       {\ifodd\pageno\leftskip.65\page@width
+               plus.35\page@width minus1.0\page@width
+       \else\rightskip.65\page@width
+               plus.35\page@width minus1.0\page@width
+       \fi
+       \parskip\z@\parfillskip\z@\hyphenpenalty\@M}
+ 
+\def\@nobreak
+       #1{\parskip\z@\nobreak#1\gdef\par{\endgraf\parskip\@parskip
+       \global\let\par\endgraf}}
+ 
+ 
+\outer\def\subsection
+        #1. #2\par{\let\par\endgraf
+        \ifdim\parskip=\z@\else
+        \vskip\z@ plus.15\vsize
+                \penalty-250\vskip\z@ plus-.15\vsize\vskip2\parskip
+        \fi
+        {\sqi\setbox\z@\hbox{#1.\enspace}%
+        \parindent\wd\z@\item{#1.}\uppercase{#2}%
+        }\@nobreak\smallskip}
+ 
+\outer\def\subsubsection
+        #1. #2\par{\let\par\endgraf
+        \ifdim\parskip=\z@ \vskip\parskip
+        \else
+        \vskip\z@ plus.15\vsize
+                \penalty-250\vskip\z@ plus-.15\vsize\vskip1.5\parskip
+        \fi
+        {\sqi\setbox\z@\hbox{#1.\enspace}%
+        \parindent\wd\z@\item{#1.}{#2}%
+        }\@nobreak\smallskip}
+ 
+\def\subhead
+        #1\par{\let\par\endgraf
+        \ifdim\parskip=\z@\vskip\parskip\else\fi
+        \leavevmode{$\underline{\hbox{\sqi
+        \vrule height\z@ depth1.5\p@ width\z@{}#1\unskip}}$}\quad
+        \@nobreak\relax}
+ 
+ 
+\outer\def\references
+        {\g@transfer\@references<<\class@options<<\everyclass}
+\def\@references{\@@references{References}}
+ 
+\outer\def\bibliography
+        {\g@transfer\@bibliography<<\class@options<<\everyclass}
+\def\@bibliography{\@@references{Bibliography}}
+ 
+\newcount\ref@count \ref@count\z@
+ 
+\def\@@references
+        #1{\endgroup\@newpage\@newclass\vglue.05\page@height \frenchspacing
+        \text@fonts@B
+        {\vtop{\baselineskip16\p@\ragged@left
+        \hbadness\@M\ten@ssi@IV #1\linebreak
+        \write@nl{<#1> }
+        \raise6\p@\line{\hrulefill}}\par
+        }\nobreak\vskip-\smallskipamount
+        \gdef\par{\endgraf\parskip6\p@ plus1\p@ minus1\p@
+                \global\let\par\endgraf}%
+        \setbox\z@\hbox{[00]\enspace}\parindent\the\wd0
+        \def\text@indent
+                ##1{\indent\llap{\hbox 
+to\parindent{##1\hfil}}\ignorespaces}
+        \def\\{\@incr\ref@count\par\hang\text@indent{[\the\ref@count]}}}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

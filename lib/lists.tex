@@ -1,0 +1,99 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% LISTS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{LISTS}
+ 
+ 
+\newcount\list@item
+\newcount\list@form
+\newdimen\list@indent
+\newcount\list@count  \list@count\z@
+\newcount\list@nest   \list@nest\z@
+\newdimen\list@indent \list@indent1\cm
+\newdimen\x@list@indent
+\newdimen\@parindent  \@parindent\z@
+ 
+\newtoks\list@label@font   \list@label@font={\bf}
+\newtoks\list@item@mark    \list@item@mark={$\bullet$}
+ 
+ 
+\def\list@options
+        {%
+        \@option <item>    <\set@map[list@item]={\\<default>=0 \\<number>=1
+                                    \\<roman>=2 \\<letter>=3 \\<label>=4
+                                    \\<user>=5 \\<none>=-1 }>
+        \@option <form>    <\set@map[list@form]={\\<spread>=0 
+\\<compact>=1 }>
+%
+        \@option <label>   <\set@toks\list@label@font=\@value>
+        \@option <mark>    <\set@toks\list@item@mark=\@value>
+        \@option <indent>  <\set@dim\list@indent=\@value>
+        \@option <start>   <\set@dim\list@count=\@value>
+        }
+ 
+ 
+\newtoks\everylist
+ 
+\def\list
+        {\@transfer\@list<<\list@options<<\everylist}
+\def\@list
+        {\@incr\list@nest
+        \if\list@count\z@\list@count\@ne\fi
+        \parskip\z@\let\par\endgraf
+        \ifcase\list@form\parskip.5\baselineskip
+        \or\parskip\z@
+        \fi
+        \parindent\list@indent
+        \ifcase\list@item
+        \def\item{\@item{\the\list@item@mark}}%
+        \or
+        \def\item{\@item{\the\list@count.}\@incr\list@count}%
+        \or
+        \def\item{\@item{(\romannumeral\the\list@count)}%
+                  \@incr\list@count}%
+        \or
+        \list@count=`\a
+        \def\item{\@item{(\char\the\list@count)}\@incr\list@count}%
+        \or
+        \def\item##1{\item@{\the\list@label@font##1\enspace}}%
+        \or
+        \def\item{\@item{\the\list@item@mark}}%
+        \else\ifnum\list@item=\m@ne
+        \def\item{\@item{}}\fi
+        \fi
+        \let\*\item}
+ 
+\def\@item
+        #1{\par\hang\noindent\hbox 
+to\parindent{\hss#1\enspace}\ignorespaces}
+\def\item@
+        
+#1{\par\hang\indent\kern-\list@indent\hbox{#1\enspace}\ignorespaces}
+ 
+\def\endlist
+        {\par\@decr\list@nest\endgroup
+        \ifnum\list@nest=\z@
+        \ifcase\list@form\parskip.5\baselineskip\par
+        \or\parskip.5\baselineskip\par
+        \or\parskip\z@\par
+        \fi
+        \gdef\par{\endgraf\parskip\@parskip\global\let\par\endgraf}%
+        \fi}
+ 
+\def\set@parindent
+        {\setbox\z@\hbox{\list@item@mark\enspace}\x@list@indent\wd\z@
+        \ifdim\x@list@indent>\list@indent\advance\@parindent 
+by\x@list@indent
+        \else\advance\@parindent by\list@indent\fi
+        \parindent\@parindent}
+ 
+ 
+\def\quote{\list\item{}\it}
+\let\endquote\endlist
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,0 +1,121 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% TABLES file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{TABLES}
+ 
+ 
+\newcount\tab@cap@pos
+\newcount\tab@macros
+\newcount\tab@align
+\newcount\tab@orient
+ 
+\newbox\tab@box         % box for table
+\newbox\tab@cap@box     % box for caption
+\newdimen\tab@width     % table width
+\newdimen\tab@height    % table height 
+\newtoks\tab@no         % table number
+\newtoks\tab@cap        % table caption
+ 
+\newtoks\template
+\newtoks\@template
+\template={&\hfil#\hfil\cr}    % default is centered columns
+ 
+ 
+\def\tab@options
+        {%
+        \@option <caption>  <\set@map[tab@cap@pos]={\\<above>=0
+                                                    \\<none>=-1 }>
+        \@option <macros>  <\set@map[tab@macros]={\\<false>=0
+                                                    \\<true>=1 }>
+        \@option <align>    <\set@map[tab@align]={\\<center>=0 \\<left>=1
+                                     \\<right>=2 }>
+        \@option <orient>   <\set@map[tab@orient]={\\<portrait>=0
+                                                   \\<landscape>=1 }>
+        \@option <size>     <\@else@true\set@dim\tab@width=\@value\cm>
+        \@option <width>    <\@else@true\set@dim\tab@width=\@value\cm>
+        \@option <skip>     <\set@dim\@tabskip=\@value\cm>
+        \@option <template> <\set@toks\@template=\@value>
+        }
+ 
+ 
+\newtoks\everytable
+ 
+\def\table
+        {\@transfer\@table<<\tab@options<<\everytable}
+\def\@table
+        {\text@fonts@B \parskip\z@
+        \let\\=\empty
+        \ifnum\tab@cap@pos=\m@ne\ifnum\tab@macros=\z@\@@table
+        \else\expandafter\get@tab@macros\fi
+        \else\expandafter\get@tab@caption\fi}
+ 
+\def\get@tab@caption
+        #1. #2\\{\tab@no={#1}\tab@cap={#2}\ifnum\tab@macros=\z@\@@table
+        \else\expandafter\get@tab@macros\fi}
+ 
+\def\get@tab@macros
+        #1\\{#1\@@table}
+ 
+\def\@@table
+        {\unskip\setbox\tab@box\vbox\bgroup
+        \tabskip\z@skip\set@invisibles
+        \if@else@
+        \edef\@hsize{to\tab@width}%
+        \edef\templ@te{\tabskip\@filskip\the\template}%
+        \else
+        \edef\@hsize{}%
+        \edef\templ@te{\tabskip\@tabskip\the\template}%
+        \fi
+        \expandafter\halign\@hsize\expandafter\bgroup\templ@te}
+ 
+\def\endtable
+        {\egroup\egroup
+%        \tab@width\wd\tab@box \tab@height\ht\tab@box
+        \ifcase\tab@cap@pos
+        \setbox\tab@cap@box\vbox{\hsize=\tab@width\rightskip\z@ plus2em 
+        \noindent\bf Table~\the\tab@no\quad\it\the\tab@cap}%
+        \else\ifnum\tab@cap@pos=\m@ne\setbox\tab@cap@box\vbox{}\fi
+        \fi
+        \vbox{\unvbox\tab@cap@box\unvbox\tab@box}%
+        \endgroup
+        \template={&\hfil##\hfil\cr}%
+        }
+ 
+ 
+{\catcode`?=\active \catcode`!=\active
+        \gdef\set@invisibles
+        {\catcode`?=\active \catcode`!=\active
+        \def\?{\char'77}\def\!{\char'41}%        punctuation marks ?!
+        \def?{\phantom0}\def!{\phantom.}%        digit and decimal phantoms
+        \def~{\phantom-}}%                       plus, minus phantom
+        \global\catcode`?=12 \global\catcode`!=12}
+ 
+ 
+\def\thickrule{\noalign{\medskip\hrule height.8\p@ \medskip}}
+\def\thinrule{\noalign{\medskip\hrule height.4\p@ \medskip}}
+\let\rule\thinrule
+\newdimen\rule@thickness \rule@thickness=.4\p@
+\def\@spanrulefill
+        {{\dimen@\baselineskip\divide\dimen@ by\tw@ \dimen@ii=\dimen@
+        \advance\dimen@ by\rule@thickness
+        \leaders\hrule height\dimen@ depth-\dimen@ii\hfill}}
+\def\spanrule#1{\multispan{#1}{\@spanrulefill}}
+ 
+\def\spanhead#1#2{\multispan{#1}{\hfil#2\hfil}}
+\def\centerhead#1{\omit\hfil#1\hfil}
+\def\sidehead#1{\noalign{\it#1}}
+ 
+\def\spacing{\noalign{\vskip\medskipamount}}
+\def\closeup{\noalign{\vskip-\medskipamount}}
+ 
+\def\fnote
+        #1#2{\noalign{\vbox{\hsize\tab@width
+        \setbox\z@\hbox{#1\enspace}\rightskip\z@ plus2em
+        \parindent\wd\z@\item{#1}#2}}}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

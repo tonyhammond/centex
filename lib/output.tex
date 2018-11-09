@@ -1,0 +1,163 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% OUTPUT file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{OUTPUT}
+ 
+ 
+\let\@output\output
+\def\output{\@warning{`\string\output' cannot be redefined}}
+ 
+\@output={\cen@output{\dimen@=\dp\@cclv \unvbox\@cclv}}
+ 
+\def\cen@output
+        #1{\set@left@right
+        \shipout\vbox{\offinterlineskip
+                \cen@regmarks0
+                \cen@headline
+                \cen@pagebody{#1}
+                \cen@footline
+                \cen@tagline
+                \cen@regmarks1
+        }
+        \advancepageno
+        \ifnum\outputpenalty>-\@MM \else\dosupereject\fi}
+ 
+ 
+\def\set@left@right
+        {\if@draft@\else\ifnum\page@sides=\@ne
+        \ifodd\pageno
+                \set@hoffset\page@left@recto
+        \else
+                \set@hoffset\page@left@verso
+        \fi\fi\fi}
+ 
+ 
+\def\cen@regmarks#1
+        {\if@draft@\relax\else\if@SACLANTCEN@\if@regmarks@
+        \nointerlineskip
+        \ifcase#1
+                \ulap{\@regmarks\vskip3\cm}%
+        \or
+                \dlap{\vskip3\cm\@regmarks}%
+        \fi
+        \nointerlineskip
+        \fi\fi\fi} 
+ 
+\newif\if@regmarks@
+\def\@regmarks
+        {\centerline{\ifnum\page@sides=\@ne
+        \ifodd\pageno\kern-.5\cm\else\kern.5\cm\fi\fi
+        \vrule\@height.5\cm\@depth\z@\@width.4\p@}}
+ 
+ 
+\def\cen@headline
+        {\ifdim\page@headskip>\z@
+        \ulap{\@line{\the\@headline}\vskip\page@headskip}%
+        \fi}
+ 
+\newtoks\@headline
+\@headline={\ifnum\page@sides=\@ne
+               \ifodd\pageno\right@headline\else\left@headline\fi
+            \else\right@headline\fi}
+ 
+\def\right@headline
+        {\copy\cen@stamp\hfil\@class}
+\def\left@headline
+        {\@class\hfil\copy\cen@stamp}
+ 
+\def\@class
+        {\if@draft@\ten@ssbf@
+                   \ifcase\page@class\@NU\or\@NR\or\@NC\or\@NS\fi
+        \else
+                \ifx\doc@class\@NU\relax
+                \else\ten@ssbf@
+                     \ifcase\page@class\@NU\or\@NR\or\@NC\or\@NS\fi
+                \fi
+        \fi}
+ 
+ 
+\newtoks\everypage
+ 
+\def\cen@pagebody
+        #1{\vbox to\page@height{\boxmaxdepth\maxdepth
+        \the\everypage
+        \ifvoid\topins\else\unvbox\topins\fi
+        #1
+        \ifvoid\footins\else\vskip\skip\footins\footnoterule
+                \unvbox\footins\fi
+        \ifr@ggedbottom\kern-\dimen@\vfil\fi}}
+ 
+\def\footnoterule
+        {\kern-3\p@\hrule width5\cm\kern2.6\p@}   % the \hrule is .4\p@ 
+high
+ 
+ 
+\def\cen@footline
+        {\ifdim\page@footskip>\z@
+        \dlap{\vskip\page@footskip\@line{\the\@footline}}%
+        \fi}
+ 
+\newtoks\@footline
+\@footline={\@blankpage\ifnum\page@sides=\@ne
+            \ifodd\pageno\right@footline\else\left@footline\fi
+            \else\right@footline\fi}
+ 
+\def\@blankpage
+        {\if@blankpage@\rlap{\dlap{\vskip.75\cm\@line
+        {\hfil\eight@rm intentionally blank 
+page\hfil}}}\@blankpage@false\fi}
+ 
+\def\set@pageno
+        {\hbox{\ten@rm-- \folio\ --}}
+ 
+\def\right@footline
+        {\ifnum\pageno=\m@ne\hfil\@class
+        \else\hss\set@pageno\hss\llap\@class\fi}
+\def\left@footline
+        {\rlap\@class\hss\set@pageno\hss}
+ 
+ 
+\newcount\page@style \page@style=\z@
+ 
+\def\normalpaging
+        {\page@style=\z@
+        \def\folio{\ifnum\pageno<\z@ \romannumeral-\pageno
+        \else\number\pageno \fi}}
+  
+\def\sectionpaging
+        {\page@style=\@ne
+        \def\set@pageno{\hbox{\ten@rm
+        \ifnum\pageno<\z@ \folio\else
+        \llap{\the\section@label}-\rlap{\number\pageno}\fi}}}
+  
+ 
+ 
+\def\atpaging
+        {\page@style=\tw@
+        \def\folio{\ifnum\pageno<\z@ \pageno=\@ne\fi
+                   \char`\@\number\pageno}}
+ 
+\def\atpages
+        {\atpaging\final
+        \write@ln{}\write@ln{Please give numbers for `at' pages:}
+        \writ@ln{}
+        \@enquire\start@page{Start page}
+        \@enquire\end@page{End page}
+        \writ@ln{}\writ@ln{}
+        \pageno=\start@page \count@=\end@page
+        \loop
+        \ifnum\pageno>\count@ \emptypage
+        \repeat}
+ 
+ 
+\def\cen@tagline
+        {\ifdim\page@tagskip>\z@
+        \if@draft@\dlap{\vskip\page@tagskip\copy\@tagline}\fi
+        \fi}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

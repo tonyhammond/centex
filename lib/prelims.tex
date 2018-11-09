@@ -1,0 +1,121 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% PRELIMS file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{PRELIMS}
+ 
+ 
+\outer\def\prelims
+        {\g@transfer\@prelims<<\class@options<<\everyclass}
+ 
+\def\@prelims
+        {\endgroup\@newpage\set@page@class       % reset page class to 
+document class
+        \begingroup\write@nl{<Prelims> }%
+        \hbadness\@M \text@fonts@B \titlepage}
+ 
+\def\endprelims{\@endgroup\vfil\endgroup\supereject}
+ 
+\def\@begingroup
+        {\@endgroup\begingroup\def\@endgroup{\par\endgroup}}
+\let\@endgroup\par
+ 
+\def\@squeeze{\leftskip=1\cm \rightskip=\leftskip}
+\def\un@squeeze{\leftskip=\z@ \rightskip=\leftskip}
+ 
+\def\@center
+        {\leftskip=\z@ plus4em \rightskip=\leftskip
+        \parfillskip\z@ \spaceskip=0.3333em \xspaceskip=0.5em}
+ 
+ 
+\def\titlepage
+        {\pageno\m@ne
+        \vbox to\page@height
+        {\no@hyphens
+        \centerline{\dlap{\hsize7.5\cm
+                \vskip7.5\cm
+                \ulap{\@center\ten@ss@II\baselineskip16\p@\doc@title}
+                \vskip1\cm
+                \dlap{{\@center\ten@ss@I\baselineskip14\p@\doc@author
+                        \vskip1\cm
+                        \nointerlineskip
+                        \centerline{\vrule width2.5\cm height.4\p@}
+                        \nointerlineskip}
+                        \if@SACLANTCEN@\vskip.5\cm\centerline
+                        {\dlap{\hsize6.35\cm\parfillskip\z@\@mumble}}
+                        \fi}
+                }}
+        \vfill
+        \if@SACLANTCEN@\released@by
+        \centerline
+                {\ulap{\@center\sq\@release\vskip3\cm\@signed}}
+        \fi
+        }\eject}
+ 
+ 
+\def\executive
+        {\@newpage\set@page@class\recto@page
+        \g@transfer\@executive<<\class@options<<\everyclass}
+\def\@executive
+        {\endgroup\@newclass\title@and@author
+        \noindent{\bf Executive Summary:}\quad}
+ 
+\def\abstract
+        {\@newpage\set@page@class\recto@page
+        \g@transfer\@abstract<<\class@options<<\everyclass}
+\def\@abstract
+        {\endgroup\@newclass\title@and@author
+        \noindent{\bf Abstract:}\quad}
+ 
+\def\title@and@author
+        {\un@squeeze\vglue1\cm 
+        \vtop{\hsize6\cm\rightskip\z@ plus2\cm minus2\cm
+        \parskip\z@ \let\break\newline
+        \no@hyphens \bf\doc@title \medskip
+        \hrule width1.5\cm \medskip
+        \rm\doc@author \bigskip}\@begingroup\@squeeze}
+ 
+\def\recto@page
+        {\ifodd\pageno\else\blankpage\fi}
+ 
+\def\keywords
+        {\par\def\\{\penalty\z@\hskip.5em plus.5em$\circ$\hskip.5em
+        plus.5em \penalty\z@}%
+        \noindent{\bf Keywords:}\quad}
+ 
+ 
+\def\contents
+        {\g@transfer\@contents<<\class@options<<\everyclass}
+\def\@contents
+        {\endgroup\@newpage\@newclass\@begingroup\@squeeze
+         \def\page
+         ##1{\if@italics@\/\egroup\@italics@false\else\fi
+         \@dotfill{\it##1}\newline}
+         \def\@dotfill{\leaders\hbox to .75em{\hss.\hss}\hfill}
+         \def\.{\hphantom{0.\ \unskip}\@italics@true\bgroup\it}
+         \frenchspacing \vglue1.5\baselineskip \baselineskip15\p@
+         \noindent{\ten@ss@II Contents}\medskip
+         \parskip.5\baselineskip}
+ 
+\newif\if@italics@
+ 
+ 
+\def\acknowledgement{\@thanks{Acknowledgement:}}
+\let\acknowledgements\acknowledgement
+\def\acknowledgment{\@thanks{Acknowledgment:}}
+\let\acknowledgments\acknowledgment
+ 
+\def\thanks{\@thanks{Acknowledgements:}}
+\def\@thanks
+        #1{\vfill\@begingroup\@squeeze \noindent{\bf#1}\quad}
+ 
+\def\preface
+        {\newpage\@begingroup\@squeeze \vglue1.5\baselineskip
+        \parindent=1\cm \noindent{\null\hfill\tenss@II
+        Preface\break}\smallskip}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

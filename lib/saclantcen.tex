@@ -1,0 +1,94 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% SACLANTCEN file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{SACLANTCEN}
+ 
+ 
+\def\NATO{North Atlantic Treaty Organization}
+\def\SACLANTCEN{SACLANT Undersea Research Centre}
+\hyphenation{SAC-LANT-CEN}
+ 
+\def\@address
+        {SACLANT Undersea Research Centre\\Viale San Bartolomeo 400\\
+        19138 San Bartolomeo (SP), Italy\\
+        \smallskip
+        \leavevmode\halign{##\ \hfil&##\hfil\cr
+        tel:   & 0187 540 111\cr
+        fax:   & 0187 524 600\cr
+        email: & library@saclantc.nato.int\cr}}
+ 
+\def\@director{John~H.~Foxwell}
+\def\div@chief
+        {\ifx\doc@division\@SRD
+        R.~Weatherburn\else\ifx\doc@division\@URD
+        H.~Urban\fi\fi}
+\def\@division
+        {\ifx\doc@division\@SRD
+        Systems Research Division\else\ifx\doc@division\@URD
+        Underwater Research Division\fi\fi}
+ 
+\def\released@by
+        {\ifx\doc@type\CEN@REPT
+                \let\@release\empty
+                \def\@signed{\@director\break Director}
+        \else\ifx\doc@type\CEN@MEMO
+                \def\@release{Issued by:\break\@division}
+                \def\@signed{\div@chief\break Division Chief}
+        \else\ifx\doc@type\CEN@SPEC
+                \def\@release{Issued by:\break\@division}
+                \def\@signed{\div@chief\break Division Chief}
+        \else\ifx\doc@type\PRO@WORK
+                \let\@release\empty
+                \def\@signed{\@director\break Director}\fi\fi\fi\fi}
+ 
+ 
+\def\@blurb
+        {The SACLANT Undersea Research Centre provides the Supreme Allied
+        Commander Atlantic (SACLANT) with scientific and technical 
+assistance
+        under the terms of its NATO charter, which entered into force on
+        1~February 1963. Without prejudice to this main task -- and under
+        the policy direction of SACLANT -- the Centre also renders 
+scientific
+        and technical assistance to the individual NATO nations.}
+ 
+\def\IN@blurb
+        {Internal notes are prepared for use only within the SACLANT 
+Undersea
+        Research Centre. They are not to be distributed or reproduced 
+outside
+        the Centre without the express permission of the Division Chief nor
+        are they to be quoted as references in other types of documents.}
+ 
+\def\@mumble
+        {The content of this document pertains to work performed under
+        Project \doc@project\ of the SACLANTCEN Programme of Work.
+        The document has been approved for release by The Director,
+        SACLANTCEN.}
+ 
+\def\@disclaimer
+        {This document is released to a NATO Government at the direction of
+        SACLANT Undersea Research Centre subject to the following 
+conditions:
+        \list[indent=.1em]
+        \*The recipient NATO Government agrees to use its best
+        endeavours to ensure that the information herein disclosed,
+        whether or not it bears a security classification, is not dealt
+        with in any manner (a)~contrary to the intent of the provisions
+        of the Charter of the Centre, or (b)~prejudicial to the rights
+        of the owner thereof to obtain patent, copyright, or other like
+        statutory protection therefor.
+        \*If the technical information was originally released to the
+        Centre by a NATO Government subject to restrictions clearly marked
+        on this document the recipient NATO Government agrees to use its
+        best endeavours to abide by the terms of the restrictions so 
+imposed
+        by the releasing Government.
+        \endlist}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

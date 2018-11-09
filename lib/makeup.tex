@@ -1,0 +1,100 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% MAKEUP file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\privatize
+\message{MAKEUP}
+ 
+ 
+\newcount\make@insert
+\newcount\make@order
+\newcount\make@height
+\newcount\make@width
+ 
+\newbox\ins@box
+\newtoks\everymakeup
+ 
+\def\make@options
+        {%
+        \@option <insert> <\set@map[make@insert]={\\<mid>=0 \\<top>=1
+                                                   \\<page>=2 }>
+        \@option <order>  <\set@map[make@order]={\\<rows>=0 \\<columns>=1 
+}>
+        \@option <height> <\set@map[make@height]={\\<false>=0 \\<true>=1 }>
+        \@option <width>  <\set@map[make@width]={\\<false>=0 \\<true>=1 }>
+        }
+ 
+ 
+\def\makeup
+        {\@transfer\@makeup<<\make@options<<\everymakeup}
+ 
+\def\@makeup
+        {\ifcase\make@insert\let\@insert=\midinsert
+        \or\let\@insert=\topinsert
+        \or\make@height=\@ne\let\@insert=\pageinsert        % 
+pageheight=true
+        \fi
+        \ifcase\make@order%
+                 \ifcase\make@height\let\@box=\vbox\or\def\@box{\vbox 
+to\vsize}\fi
+%                 \ifcase\make@width\let\@size=\empty\or\def\@size{to 
+\hsize}\fi
+                 \def\@size{to \hsize}%
+                 \def\[{\hbox\@size\bgroup\let\\=\hfil}\let\\=\vfil
+        \or\let\@box=\hbox 
+                 \ifcase\make@height\let\@box=\hbox\or\def\@box{\hbox 
+to\hsize}\fi
+%                 \ifcase\make@width\let\@size=\empty\or\def\@size{to 
+\vsize}\fi
+                 \def\@size{to \vsize}%
+                 \def\[{\vbox\@size\bgroup\let\\=\vfil}\let\\=\hfil
+        \fi
+        \def\]{\egroup\ignorespaces}%
+        \setbox\ins@box=\@box\bgroup\hbadness=\@M\vbadness=\@M}
+ 
+\def\endmakeup
+        {\egroup                           % finish the \@box
+        \ifdim\ht\ins@box>\page@height
+                \@warning{Insert height is greater than page height}%
+                \setbox\ins@box=\vbox to\page@height{\vss\box\ins@box\vss}%
+        \fi
+        \@insert \box\ins@box \endinsert
+        \endgroup
+        }
+ 
+ 
+ 
+\def\endinsert
+        {\egroup                           % finish the \vbox
+        \if@mid \dimen@\ht\z@ \advance\dimen@\dp\z@
+        \advance\dimen@12\p@ \advance\dimen@\pagetotal
+        \ifdim\dimen@>\pagegoal
+        \gdef\midinsert{\@midfalse\p@gefalse\@ins}%
+        \@midfalse\p@gefalse\fi\fi
+        \if@mid \vskip\parskip\bigskip\box\z@\bigbreak
+        \else\insert\topins{\penalty100 % floating insertion
+        \splittopskip\z@skip
+        \splitmaxdepth\maxdimen \floatingpenalty\z@
+        \ifp@ge \dimen@\dp\z@
+        \box\z@
+%        \vbox to\vsize{\unvbox\z@\kern-\dimen@}% depth is zero
+        \else \box\z@\nobreak\bigskip\fi}\fi\endgroup}
+ 
+ 
+\def\display
+        #1 {\makeup[insert=mid]
+        \input #1
+        \endmakeup}
+\def\topdisplay
+        #1 {\makeup[insert=top]
+        \input #1
+        \endmakeup}
+\def\pagedisplay
+        #1 {\makeup[insert=page]
+        \input #1
+        \endmakeup}
+ 
+ 
+\noprivatize
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
