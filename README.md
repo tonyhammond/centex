@@ -3,7 +3,7 @@
 This `TeX` macro package was used to process technical documents at NATO SACLANTCEN.
 
 Note that this is a macro package built on top of the plain `TeX` format, and is not a `LaTeX` format 
-(although there was a subsequent port to `LaTeX`.)
+(although there was a subsequent port to `LaTeX`).
 
 The `cenTeX`  macro package was developed within the Scientific
 and Technical Information (STI) Department of NATO SACLANTCEN for preparing
