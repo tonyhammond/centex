@@ -1,4 +1,4 @@
-# cenTeX - A TeX macro pacakge
+# cenTeX – A TeX macro pacakge
 
 This `TeX` macro package was used to process technical documents at NATO SACLANTCEN.
 
